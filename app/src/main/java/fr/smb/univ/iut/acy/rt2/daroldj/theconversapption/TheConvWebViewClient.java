@@ -1,11 +1,8 @@
 package fr.smb.univ.iut.acy.rt2.daroldj.theconversapption;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import androidx.core.content.ContextCompat;
 
 public class TheConvWebViewClient extends WebViewClient {
     @Override
