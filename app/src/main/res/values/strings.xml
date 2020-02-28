@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TheConversApption</string>
+    <string name="channel_name">fr.smb.univ.acy.rt2.daroldj.theconversapption.channelNotification</string>
 </resources>

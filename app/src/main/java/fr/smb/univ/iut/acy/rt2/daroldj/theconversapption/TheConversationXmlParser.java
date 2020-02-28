@@ -18,7 +18,7 @@ public class TheConversationXmlParser {
 
     private static final String ns = null;
 
-    public static List<Entry> parse(InputStream in) throws XmlPullParserException, IOException
+    public static List<Entry> parseTilADayAgo(InputStream in) throws XmlPullParserException, IOException
     {
         try {
             XmlPullParser parser = Xml.newPullParser();

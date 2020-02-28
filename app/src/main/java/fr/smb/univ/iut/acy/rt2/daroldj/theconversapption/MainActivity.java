@@ -14,6 +14,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Constraints;
 import androidx.core.app.ActivityCompat;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
@@ -49,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
         {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 0);
         }
-        else {
+        else
+        {
             loadWebViewAndURL(this.getApplicationContext(), "https://theconversation.com/fr");
 
 //            try {
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private void scheduleServiceAlarm(Context context)
     {
         //Setting intent to class where notification will be handled
-        Intent intent = new Intent(context, alarmReceiverNotif.class);
+        Intent intent = new Intent(context, RSSTheConvNotif.class);
 
         //Setting pending intent to respond to broadcast sent by AlarmManager everyday at 8am
         PendingIntent alarmIntentElapsed = PendingIntent.getBroadcast(context, 74940, intent, PendingIntent.FLAG_UPDATE_CURRENT);
