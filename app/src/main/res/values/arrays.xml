@@ -1,0 +1,33 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+
+    <string-array name="settings_multi_select_list_CategoryToFollow">
+        <item>technology</item>
+        <item>politics</item>
+        <item>health</item>
+        <item>ethics</item>
+        <item>environment</item>
+        <item>education</item>
+        <item>business</item>
+        <item>arts</item>
+    </string-array>
+    <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow">
+        <item>https://theconversation.com/us/technology/articles.atom</item>
+        <item>https://theconversation.com/us/politics/articles.atom</item>
+        <item>https://theconversation.com/us/health/articles.atom</item>
+        <item>https://theconversation.com/us/ethics/articles.atom</item>
+        <item>https://theconversation.com/us/environment/articles.atom</item>
+        <item>https://theconversation.com/us/education/articles.atom</item>
+        <item>https://theconversation.com/us/business/articles.atom</item>
+        <item>https://theconversation.com/us/arts/articles.atom</item>
+    </string-array>
+</resources>

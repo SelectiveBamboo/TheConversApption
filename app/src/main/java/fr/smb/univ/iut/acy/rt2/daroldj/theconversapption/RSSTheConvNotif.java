@@ -30,7 +30,6 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 /*
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
@@ -39,6 +38,11 @@ import java.util.List;
  * helper methods.
  */
 public class RSSTheConvNotif extends IntentService {
+
+    public static final String CHANNEL_NAME = "fr.smb.univ.acy.rt2.daroldj.theconversapption.NotifRSS";
+    public static final String CHANNEL_DESCRIPTION = "A channel for notification";
+
+    private List<String> listURLs = new ArrayList<>();
 
     private final static String TAG = RSSTheConvNotif.class.getName();
 
@@ -51,7 +55,8 @@ public class RSSTheConvNotif extends IntentService {
     }
 
     @Override
-    public void onCreate() {
+    public void onCreate()
+    {
         // TODO Auto-generated method stub
         super.onCreate();
         Log.d("Testing", "Service got created");
@@ -59,19 +64,25 @@ public class RSSTheConvNotif extends IntentService {
     }
 
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         // TODO Auto-generated method stub
         Log.d("Testing", "Service got destroyed");
         super.onDestroy();
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleIntent(Intent intent)
+    {
+        Toast.makeText(context, "In onHandleIntent", Toast.LENGTH_LONG);
         Log.d(TAG, "Handling intent in RSSTheConvNotif");
 
         createNotificationChannel();
 
-        if (isWebsiteReachable("theconversation.com")) {
+        if (isWebsiteReachable("theconversation.com"))
+        {
+            Log.d(TAG, "Website reachable");
+
             List<File> fetchedFiles = new ArrayList<>();
 
             int n = 844523226;
@@ -117,7 +128,6 @@ public class RSSTheConvNotif extends IntentService {
                         notificationManager.notify(n, builder.build());
 
                         n++;
-
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -128,14 +138,7 @@ public class RSSTheConvNotif extends IntentService {
                 }
             }
         }
-
-
     }
-
-    public static final String CHANNEL_NAME = "fr.smb.univ.acy.rt2.daroldj.theconversapption.NotifRSS";
-    public static final String CHANNEL_DESCRIPTION = "A channel for notification";
-
-    private List<String> listURLs = new ArrayList<>();
 
 //    public NotificationCompat.Builder buildLocalNotification(Context context, PendingIntent pendingIntent)
 //    {
@@ -173,7 +176,8 @@ public class RSSTheConvNotif extends IntentService {
 
         try {
             File.createTempFile(filename, null, context.getCacheDir());
-        } catch (IOException e) { e.printStackTrace(); }
+        }
+        catch (IOException e) { e.printStackTrace(); }
 
         File fileFetchedXml = new File(context.getCacheDir(), filename);
 
@@ -192,7 +196,6 @@ public class RSSTheConvNotif extends IntentService {
         }
         catch (FileNotFoundException fnfe) {fileFetchedXml = null;}
         catch (IOException ioe) {fileFetchedXml = null;}
-
         finally
         {
             return fileFetchedXml;
@@ -203,7 +206,6 @@ public class RSSTheConvNotif extends IntentService {
     {
         try {
             InetAddress ipAddr = InetAddress.getByName(websiteURL);
-            //You can replace it with your name
             return !ipAddr.equals("");
 
         } catch (Exception e) {

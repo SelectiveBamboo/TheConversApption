@@ -6,13 +6,18 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Constraints;
 import androidx.core.app.ActivityCompat;
@@ -75,10 +80,30 @@ public class MainActivity extends AppCompatActivity {
         //We're setting alarm to fire notification after 15 minutes, and every 15 minutes there on
         assert alarmManagerElapsed != null;
         alarmManagerElapsed.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HALF_DAY,
-                2*AlarmManager.INTERVAL_DAY, alarmIntentElapsed);
+                SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR,
+                2*AlarmManager.INTERVAL_HALF_DAY, alarmIntentElapsed);
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        Log.d(TAG, "onCreateOptionsMenu");
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_activity_main, menu);
+        return true;
+    }
+
+    public void openSettings(MenuItem menuItem)
+    {
+        Log.d(TAG, "modifyIp");
+
+        Intent intent = new Intent(this, SettingsActivity.class);
+
+        super.startActivity(intent);
+        super.finish();
+    }
 //    protected void onResume()
 //    {
 //        Log.i(TAG, "onResume"); //DEBUG
@@ -103,8 +128,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(webView);
 
         WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
 
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setAllowContentAccess(true);
+        webSettings.setDisplayZoomControls(true);
+        //webSettings.setForceDark(WebSettings.FORCE_DARK_ON);
+
+
+        setContentView(webView);
         webView.loadUrl(url);
     }
 

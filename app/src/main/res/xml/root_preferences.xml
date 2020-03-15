@@ -1,0 +1,35 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/messages_header"/>
+
+    <PreferenceCategory app:title="@string/Notif_header">
+
+        <SwitchPreferenceCompat
+            app:key="switch notification"
+            app:summaryOff="@string/enablingNotification_summary_off"
+            app:summaryOn="@string/enablingNotification_summary_on"
+            app:title="@string/notif_title" />
+
+        <Preference
+            app:key="set_time_notification"
+            app:title="Set at which time you want to be notified"
+            android:id="@+id/NotificationTimePicker"/>
+
+        <MultiSelectListPreference
+            android:dialogTitle="Select category you want to follow"
+            android:entries="@array/settings_multi_select_list_CategoryToFollow"
+            android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow"
+            android:key="TheConversation US's feeds to follow"
+            android:title="Multiselect US feeds" />
+
+        <EditTextPreference
+            android:defaultValue="Default value"
+            android:key="edit_text_preference_1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Edit text preference" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

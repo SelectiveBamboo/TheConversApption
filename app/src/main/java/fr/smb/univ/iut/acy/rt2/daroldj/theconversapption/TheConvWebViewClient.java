@@ -8,8 +8,7 @@ public class TheConvWebViewClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url)
     {
-        if ("theconversation.com".equals(Uri.parse(url).getHost())
-            || "theconversationfrance.cmail20.com".equals(Uri.parse(url).getHost()))
+        if ("theconversation.com".equals(Uri.parse(url).getHost()))
         {
             return false;
         }
