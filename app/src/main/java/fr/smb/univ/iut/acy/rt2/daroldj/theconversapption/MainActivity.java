@@ -21,7 +21,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,17 +64,24 @@ public class MainActivity extends AppCompatActivity {
 
        String[] splittedTimeNotif = timeNotif.split(":");
 
-
-        Date dat  = new Date();//initializes to now
-        Calendar cal_alarm = Calendar.getInstance();
         Calendar cal_now = Calendar.getInstance();
-        cal_alarm.setTimeInMillis(System.currentTimeMillis());
-        cal_now.setTimeInMillis(System.currentTimeMillis());
-        // cal_now.setTimeInMillis(SystemClock.elapsedRealtime());
-        cal_alarm.set(Calendar.HOUR_OF_DAY, Integer.parseInt(splittedTimeNotif[0]));//set the alarm time
-        cal_alarm.set(Calendar.MINUTE, Integer.parseInt(splittedTimeNotif[1]));
-        cal_alarm.set(Calendar.SECOND,0);
-        if(cal_alarm.before(cal_now)){//if its in the past increment
+        int now_date = cal_now.get(Calendar.DATE);
+        int now_month = cal_now.get(Calendar.MONTH);
+        int now_year = cal_now.get(Calendar.YEAR);
+
+        int alarm_hour = Integer.parseInt(splittedTimeNotif[0]);
+        int alarm_minute = Integer.parseInt(splittedTimeNotif[1]);
+
+        Calendar cal_alarm = Calendar.getInstance();
+        cal_alarm.set(now_year, now_month, now_date, alarm_hour, alarm_minute);
+//        cal_alarm.setTimeInMillis(System.currentTimeMillis());
+//        cal_now.setTimeInMillis(System.currentTimeMillis());
+//        // cal_now.setTimeInMillis(SystemClock.elapsedRealtime());
+//        cal_alarm.set(Calendar.HOUR_OF_DAY, Integer.parseInt(splittedTimeNotif[0]));//set the alarm time
+//        cal_alarm.set(Calendar.MINUTE, Integer.parseInt(splittedTimeNotif[1]));
+//        cal_alarm.set(Calendar.SECOND,0);
+        if(cal_alarm.before(cal_now))  //if its in the past increment
+        {
             cal_alarm.add(Calendar.DATE,1);
         }
 
