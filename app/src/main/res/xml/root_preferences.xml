@@ -6,7 +6,7 @@
     <PreferenceCategory app:title="@string/Notif_header">
 
         <SwitchPreferenceCompat
-            app:key="switch notification"
+            app:key="switch_allow_notif"
             app:summaryOff="@string/enablingNotification_summary_off"
             app:summaryOn="@string/enablingNotification_summary_on"
             app:title="@string/notif_title" />
@@ -20,8 +20,8 @@
             android:dialogTitle="Select category you want to follow"
             android:entries="@array/settings_multi_select_list_CategoryToFollow"
             android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow"
-            android:key="TheConversation US's feeds to follow"
-            android:title="Multiselect US feeds" />
+            android:key="multiselect_US_feeds"
+            android:title="TheConversation US's feeds to follow" />
 
         <EditTextPreference
             android:defaultValue="Default value"

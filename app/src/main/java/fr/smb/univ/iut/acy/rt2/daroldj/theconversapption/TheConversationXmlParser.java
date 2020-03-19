@@ -12,8 +12,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.smb.univ.iut.acy.rt2.daroldj.theconversapption.Entry;
-
 public class TheConversationXmlParser {
 
     private static final String ns = null;
@@ -26,7 +24,9 @@ public class TheConversationXmlParser {
             parser.setInput(in, null);
             parser.nextTag();
 
-            return readFeed(parser);
+            Instant aDayAgo = Instant.now(Clock.systemUTC()).minusSeconds(86400);   //Minus 24Hours
+
+            return readFeed(parser, aDayAgo);
         }
         finally
         {
@@ -34,7 +34,8 @@ public class TheConversationXmlParser {
         }
     }
 
-    private static List<Entry> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException
+    //Give a null object as UTCDateLimit if no date limit is required
+    private static List<Entry> readFeed(XmlPullParser parser, Instant UTCDateLimit) throws XmlPullParserException, IOException
     {
         List<Entry> entries = new ArrayList<>();
         boolean isOutdated = false;
@@ -52,10 +53,9 @@ public class TheConversationXmlParser {
             {
                 Entry entry = readEntry(parser);
 
-                Instant publishedInstant = Instant.parse( entry.getPublished() );
-                Instant aDayAgo = Instant.now(Clock.systemUTC()).minusSeconds(86400);   //Minus 24Hours
+                Instant publishedInstant = Instant.parse(entry.getPublished());
 
-                if (publishedInstant.isBefore(aDayAgo))
+                if (UTCDateLimit != null && publishedInstant.isBefore(UTCDateLimit))
                 {
                     isOutdated = true;
                 }

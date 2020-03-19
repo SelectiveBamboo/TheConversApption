@@ -4,17 +4,22 @@ import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+import androidx.preference.SwitchPreferenceCompat;
 
 import java.util.Locale;
+import java.util.Objects;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements TimePickerDialog.OnTimeSetListener {
 
-
-    private Preference setTime;
+    private Preference timeNotifPref;
+    private SwitchPreferenceCompat allowNotifPref;
+    private MultiSelectListPreference UsFeedSelections;
 
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
@@ -22,13 +27,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements TimePi
         configListener();
     }
 
-    private void getPreference() {
-        setTime = findPreference("set_time_notification");
+    private void getPreference()
+    {
+        timeNotifPref = findPreference("set_time_notification");
+        allowNotifPref = findPreference("switch_allow_notif");
+        UsFeedSelections = findPreference("multiselect_US_feeds");
     }
 
     private void configListener() {
-        if (setTime != null){
-            setTime.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        if (timeNotifPref != null) {
+            timeNotifPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     SettingsFragment.this.showTimeDialog(preference);
@@ -53,8 +61,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements TimePi
     public void onTimeSet(TimePicker timePicker, int h, int m) {
         String time = String.format(Locale.getDefault(),"%02d", h) + ":" + String.format(Locale.getDefault(), "%02d", m);
         SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(this.getContext());
+                PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(this.getContext()));
         sharedPreferences.edit().putString("set_time", time).apply();
+        Toast.makeText(getContext(), "timeNotif : " + time, Toast.LENGTH_LONG).show();
         // if you use setOnPreferenceChangeListener on it, use setTime.callChangeListener(time);
     }
 }

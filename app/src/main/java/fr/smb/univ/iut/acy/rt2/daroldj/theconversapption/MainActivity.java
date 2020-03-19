@@ -5,10 +5,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -17,22 +16,11 @@ import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.Constraints;
 import androidx.core.app.ActivityCompat;
+import androidx.preference.PreferenceManager;
 
-import com.jakewharton.threetenabp.AndroidThreeTen;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
     private WebView webView;
 
+    SharedPreferences sharedPrefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -48,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        scheduleServiceAlarm( getApplicationContext() );
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        scheduleServiceAlarm(this.getBaseContext());
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
                 != PackageManager.PERMISSION_GRANTED)
@@ -57,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            loadWebViewAndURL(this.getApplicationContext(), "https://theconversation.com/fr");
+            loadWebViewAndURL(this.getBaseContext(), "https://theconversation.com/fr");
 
 //            try {
 //                fetchXML("https://theconversation.com/fr/articles.atom", this.getApplicationContext());
@@ -66,22 +58,45 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void scheduleServiceAlarm(Context context)
-    {
+    private void scheduleServiceAlarm(Context context) {
+        String timeNotif = sharedPrefs.getString("set_time", "19:00");
+       // Toast.makeText(context, "timeNotif : " + timeNotif, Toast.LENGTH_LONG).show();
+        Log.println(Log.DEBUG, TAG,"timeNotif : " + timeNotif);
+
+       String[] splittedTimeNotif = timeNotif.split(":");
+
+
+        Date dat  = new Date();//initializes to now
+        Calendar cal_alarm = Calendar.getInstance();
+        Calendar cal_now = Calendar.getInstance();
+        cal_alarm.setTimeInMillis(System.currentTimeMillis());
+        cal_now.setTimeInMillis(System.currentTimeMillis());
+        // cal_now.setTimeInMillis(SystemClock.elapsedRealtime());
+        cal_alarm.set(Calendar.HOUR_OF_DAY, Integer.parseInt(splittedTimeNotif[0]));//set the alarm time
+        cal_alarm.set(Calendar.MINUTE, Integer.parseInt(splittedTimeNotif[1]));
+        cal_alarm.set(Calendar.SECOND,0);
+        if(cal_alarm.before(cal_now)){//if its in the past increment
+            cal_alarm.add(Calendar.DATE,1);
+        }
+
+        Log.println(Log.ERROR, TAG,"alarmcalendar : " + cal_alarm.getTimeInMillis());
+
         //Setting intent to class where notification will be handled
-        Intent intent = new Intent(context, RSSTheConvNotif.class);
+        Intent intent = new Intent(this, forNotifReceiver.class);
 
         //Setting pending intent to respond to broadcast sent by AlarmManager everyday at 8am
-        PendingIntent alarmIntentElapsed = PendingIntent.getBroadcast(context, 74940, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent alarmIntentElapsed = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //getting instance of AlarmManager service
-        AlarmManager alarmManagerElapsed = (AlarmManager)context.getSystemService(ALARM_SERVICE);
+        AlarmManager alarmManagerElapsed = (AlarmManager)getSystemService(ALARM_SERVICE);
         //Inexact alarm everyday since device is booted up. This is a better choice and
         //scales well when device time settings/locale is changed
         //We're setting alarm to fire notification after 15 minutes, and every 15 minutes there on
         assert alarmManagerElapsed != null;
-        alarmManagerElapsed.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_HOUR,
+        alarmManagerElapsed.setRepeating(AlarmManager.RTC_WAKEUP,
+                System.currentTimeMillis()+5000,
                 2*AlarmManager.INTERVAL_HALF_DAY, alarmIntentElapsed);
+        Log.println(Log.ERROR, TAG,"alarm : " + alarmManagerElapsed.getNextAlarmClock().getTriggerTime());
+
     }
 
 
