@@ -1,6 +1,7 @@
 package fr.smb.univ.iut.acy.rt2.daroldj.theconversapption;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TimePicker;
@@ -47,7 +48,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements TimePi
     }
 
     private void showTimeDialog(Preference preference) {
-        String value = preference.getSharedPreferences().getString("set_time_notification", "19:00");
+        String value = preference.getSharedPreferences().getString("set_time_notification", "12:00");
         String[] time = value.split(":");
         int hours = Integer.parseInt(time[0]);
         int minutes = Integer.parseInt(time[1]);
@@ -63,6 +64,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements TimePi
         SharedPreferences sharedPreferences =
                 PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(this.getContext()));
         sharedPreferences.edit().putString("set_time", time).apply();
+
+        Intent scheduleNotifIntent = new Intent(getContext(), scheduleNotifService.class);
+        getActivity().startService(scheduleNotifIntent);
+
         Toast.makeText(getContext(), "timeNotif : " + time, Toast.LENGTH_LONG).show();
         // if you use setOnPreferenceChangeListener on it, use setTime.callChangeListener(time);
     }

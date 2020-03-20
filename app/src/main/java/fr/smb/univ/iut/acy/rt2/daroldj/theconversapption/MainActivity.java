@@ -49,17 +49,11 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             loadWebViewAndURL(this.getBaseContext(), "https://theconversation.com/fr");
-
-//            try {
-//                fetchXML("https://theconversation.com/fr/articles.atom", this.getApplicationContext());
-//            }
-//            catch (MalformedURLException e) { Log.e(TAG, e.getMessage()); }
         }
     }
 
-    private void scheduleServiceAlarm(Context context) {
+    public void scheduleServiceAlarm(Context context) {
         String timeNotif = sharedPrefs.getString("set_time", "19:00");
-       // Toast.makeText(context, "timeNotif : " + timeNotif, Toast.LENGTH_LONG).show();
         Log.println(Log.DEBUG, TAG,"timeNotif : " + timeNotif);
 
        String[] splittedTimeNotif = timeNotif.split(":");
@@ -74,37 +68,30 @@ public class MainActivity extends AppCompatActivity {
 
         Calendar cal_alarm = Calendar.getInstance();
         cal_alarm.set(now_year, now_month, now_date, alarm_hour, alarm_minute);
-//        cal_alarm.setTimeInMillis(System.currentTimeMillis());
-//        cal_now.setTimeInMillis(System.currentTimeMillis());
-//        // cal_now.setTimeInMillis(SystemClock.elapsedRealtime());
-//        cal_alarm.set(Calendar.HOUR_OF_DAY, Integer.parseInt(splittedTimeNotif[0]));//set the alarm time
-//        cal_alarm.set(Calendar.MINUTE, Integer.parseInt(splittedTimeNotif[1]));
-//        cal_alarm.set(Calendar.SECOND,0);
-        if(cal_alarm.before(cal_now))  //if its in the past increment
-        {
-            cal_alarm.add(Calendar.DATE,1);
-        }
+
+        if(cal_alarm.before(cal_now))  //if its in the past increment of a day
+            { cal_alarm.add(Calendar.DATE,1); }
 
         Log.println(Log.ERROR, TAG,"alarmcalendar : " + cal_alarm.getTimeInMillis());
+        Log.println(Log.ERROR, TAG,"nowCalendar : " + cal_now.getTimeInMillis());
 
         //Setting intent to class where notification will be handled
-        Intent intent = new Intent(this, forNotifReceiver.class);
+        Intent intent = new Intent(this, createNotifReceiver.class);
 
-        //Setting pending intent to respond to broadcast sent by AlarmManager everyday at 8am
-        PendingIntent alarmIntentElapsed = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        //Setting pending intent to respond to broadcast sent by AlarmManager
+        PendingIntent alarmIntent= PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //getting instance of AlarmManager service
-        AlarmManager alarmManagerElapsed = (AlarmManager)getSystemService(ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         //Inexact alarm everyday since device is booted up. This is a better choice and
         //scales well when device time settings/locale is changed
         //We're setting alarm to fire notification after 15 minutes, and every 15 minutes there on
-        assert alarmManagerElapsed != null;
-        alarmManagerElapsed.setRepeating(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis()+5000,
-                2*AlarmManager.INTERVAL_HALF_DAY, alarmIntentElapsed);
-        Log.println(Log.ERROR, TAG,"alarm : " + alarmManagerElapsed.getNextAlarmClock().getTriggerTime());
+        assert alarmManager != null;
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                cal_alarm.getTimeInMillis(),
+                2*AlarmManager.INTERVAL_HALF_DAY, alarmIntent);
 
+        Log.println(Log.ERROR, TAG,"next alarm : " + alarmManager.getNextAlarmClock().getTriggerTime());
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -125,21 +112,6 @@ public class MainActivity extends AppCompatActivity {
         super.startActivity(intent);
         super.finish();
     }
-//    protected void onResume()
-//    {
-//        Log.i(TAG, "onResume"); //DEBUG
-//        super.onResume();
-//
-//        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
-//                != PackageManager.PERMISSION_GRANTED)
-//        {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 0);
-//        }
-//        else
-//        {
-//            loadWebViewAndURL(this.getApplicationContext(), "https://theconversation.com/fr");
-//        }
-//    }
 
     protected void loadWebViewAndURL(Context context, String url)
     {
