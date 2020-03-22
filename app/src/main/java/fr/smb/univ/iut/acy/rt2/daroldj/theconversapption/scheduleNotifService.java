@@ -1,28 +1,30 @@
 package fr.smb.univ.iut.acy.rt2.daroldj.theconversapption;
 
 import android.app.AlarmManager;
-import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 
+import androidx.core.app.JobIntentService;
 import androidx.preference.PreferenceManager;
 
 import java.util.Calendar;
 
-public class scheduleNotifService extends IntentService {
+public class scheduleNotifService extends JobIntentService {
 
     private final static String TAG = scheduleNotifService.class.getName(); //DEBUG
 
     SharedPreferences sharedPrefs;
 
-    public scheduleNotifService() { super("scheduleNotifService"); }
+    public static void startService(Context context)
+    {
+        enqueueWork(context, scheduleNotifService.class, 1, new Intent());
+    }
 
     @Override
-    protected void onHandleIntent(Intent intent)
+    protected void onHandleWork(Intent intent)
     {
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         scheduleServiceAlarm(this);
@@ -64,7 +66,6 @@ public class scheduleNotifService extends IntentService {
                 cal_alarm.getTimeInMillis(),
                 2*AlarmManager.INTERVAL_HALF_DAY, alarmIntent);
 
-        Toast.makeText(context, "Next notif at: " + cal_now.get(Calendar.HOUR) + ":" + cal_now.get(Calendar.MINUTE), Toast.LENGTH_LONG);
-        Log.println(Log.VERBOSE, TAG,"next alarm in service : " + alarmManager.getNextAlarmClock().getTriggerTime());
+       // Toast.makeText(context, "Next notif at: " + cal_now.get(Calendar.HOUR) + ":" + cal_now.get(Calendar.MINUTE), Toast.LENGTH_LONG).show();
     }
 }

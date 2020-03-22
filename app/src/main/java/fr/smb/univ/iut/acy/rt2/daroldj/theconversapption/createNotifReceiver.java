@@ -21,13 +21,13 @@ public class createNotifReceiver extends BroadcastReceiver {
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
 
         boolean isNotifEnabed = sharedPrefs.getBoolean("switch_allow_notif", true);
-        Log.d(TAG, "isNotifEnabled: " + isNotifEnabed);
+        Log.v(TAG, "isNotifEnabled: " + isNotifEnabed);
 
         if (isNotifEnabed)
         {
             Intent intent1 = new Intent(context, RSSTheConvNotif.class);
             Log.e(this.getClass().getName(), "forNotifreceiver made the intent");
-            context.startService(intent1);
+            RSSTheConvNotif.startService(context);
         }
         else
         {

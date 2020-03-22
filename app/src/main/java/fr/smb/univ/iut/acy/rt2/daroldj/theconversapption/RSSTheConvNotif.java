@@ -1,6 +1,5 @@
 package fr.smb.univ.iut.acy.rt2.daroldj.theconversapption;
 
-import android.app.IntentService;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.core.app.JobIntentService;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
@@ -40,7 +40,7 @@ import java.util.Set;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class RSSTheConvNotif extends IntentService {
+public class RSSTheConvNotif extends JobIntentService {
 
     private static final  String CHANNEL_ID = "channel_TheConversApption";
 
@@ -57,8 +57,9 @@ public class RSSTheConvNotif extends IntentService {
 
     private SharedPreferences sharedPref;
 
-    public RSSTheConvNotif() {
-        super(TAG);
+    public static void startService(Context context)
+    {
+        enqueueWork(context, RSSTheConvNotif.class, 1001, new Intent());
     }
 
     @Override
@@ -73,16 +74,28 @@ public class RSSTheConvNotif extends IntentService {
     public void onDestroy()
     {
         // TODO Auto-generated method stub
-        Log.d(TAG, "Service's been destroyed");
+        Log.d(TAG, "Service's been destroyed in RSSTheConvNotif");
         super.onDestroy();
     }
 
     @Override
-    protected void onHandleIntent(Intent intent)
+    protected void onHandleWork(Intent intent)
     {
         Log.d(TAG, "Handling intent in RSSTheConvNotif");
 
-        Set<String> rssLinks = sharedPref.getStringSet("multiselect_US_feeds", new HashSet<String>());
+        Set<String> rssLinks = new HashSet<>();
+
+        String[] regionFeeds = {"US", "FR", "AU", "AF", "UK", "GP", "CA_en", "ID", "ES", "CA_fr", "NL"};
+
+        for (String region : regionFeeds)
+        {
+            Set<String> feedOfARegion = sharedPref.getStringSet("multiselect_"+region+"_feeds", null);
+
+            if (feedOfARegion != null)
+            {
+                rssLinks.addAll(feedOfARegion);
+            }
+        }
 
         createNotificationChannel();
 
@@ -96,12 +109,16 @@ public class RSSTheConvNotif extends IntentService {
 
             int n = 1;
 
-            for (String rssLink : rssLinks)
+            if (rssLinks.size() > 0)
             {
-                try {
-                    inputStreamRss  = downloadUrl(rssLink);
-                }
-                catch (IOException e) { e.printStackTrace(); }
+                for (String rssLink : rssLinks)
+                {
+                    Log.d(TAG, rssLink);
+                    try {
+                        inputStreamRss  = downloadUrl(rssLink);
+                    }
+                    catch (Exception e) { e.printStackTrace(); }
+
               /*  try {
                     File file1 = do
                         File file = fetchXML(rssLink, context);
@@ -109,47 +126,54 @@ public class RSSTheConvNotif extends IntentService {
                 } catch (Exception e) { e.printStackTrace(); }
               */
 
-                // for (int i = 0; i < fetchedFiles.size(); i++) {
-               // File file = fetchedFiles.get(i);
+                    // for (int i = 0; i < fetchedFiles.size(); i++) {
+                    // File file = fetchedFiles.get(i);
 
-                try {
-                    List<Entry> entries = TheConversationXmlParser.parseTilADayAgo(inputStreamRss);
+                    try {
+                        List<Entry> entries = TheConversationXmlParser.parseTilADayAgo(inputStreamRss);
 
-                    for (Entry entry : entries)
-                    {
-                        String linkInEntry = entry.getLink();
-                        String summaryInEntry = entry.getSummary();
+                        for (int i = 0; i<entries.size(); i++)
+                        {
+                            Entry entry = entries.get(i);
 
-                        Intent intentOnClick = new Intent(Intent.ACTION_VIEW, Uri.parse(linkInEntry));
-                        intentOnClick.setData(Uri.parse(linkInEntry));
+                            String linkInEntry = entry.getLink();
+                            String summaryInEntry = entry.getSummary();
 
-                        PendingIntent pendingIntent =
-                                PendingIntent.getActivity(context, 74940, intentOnClick, PendingIntent.FLAG_UPDATE_CURRENT);
+                            Intent intentOnClick = new Intent(Intent.ACTION_VIEW, Uri.parse(linkInEntry));
+                            intentOnClick.setData(Uri.parse(linkInEntry));
 
-                        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                                .setContentTitle(summaryInEntry)
-                                .setContentText(summaryInEntry)
-                                .setStyle(new NotificationCompat.BigTextStyle()
-                                        .bigText(entry.getSummary()))
-                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                .setCategory(NotificationCompat.CATEGORY_SOCIAL)
-                                .setContentIntent(pendingIntent)
-                                .setAutoCancel(true);
+                            PendingIntent pendingIntent =
+                                    PendingIntent.getActivity(context, 74940, intentOnClick, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-                        // notificationId is a unique int for each notification that you must define
-                        notificationManager.notify(n, builder.build());
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                                    .setContentTitle(summaryInEntry)
+                                    .setContentText(summaryInEntry)
+                                    .setStyle(new NotificationCompat.BigTextStyle()
+                                            .bigText(entry.getSummary()))
+                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                    .setCategory(NotificationCompat.CATEGORY_SOCIAL)
+                                    .setContentIntent(pendingIntent)
+                                    .setAutoCancel(true);
 
-                        n++;
+                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                            // notificationId is a unique int for each notification that you must define
+                            notificationManager.notify(n, builder.build());
 
-                        Log.i(TAG, "Notification sent.");
+                            n++;
+
+                            Log.i(TAG, "Notification sent.");
+                        }
                     }
+                    catch (FileNotFoundException e) { Log.e(TAG, "error FileNotFoundException : " + e.getMessage()); }
+                    catch (IOException e) { Log.e(TAG, "error IOException : " + e.getMessage()); }
+                    catch (XmlPullParserException e) { Log.e(TAG, "error XMLPullParserException : " + e.getMessage()); }
+                    catch (NullPointerException npe) { Log.e(TAG, "error nullPointerexception : " + npe.getMessage()); }
                 }
-                catch (FileNotFoundException e) { e.printStackTrace(); }
-                catch (IOException e) { e.printStackTrace(); }
-                catch (XmlPullParserException e) { e.printStackTrace(); }
-                catch (NullPointerException npe) { npe.printStackTrace(); }
+            }
+            else
+            {
+                Log.d(TAG, "There was not any feed selected for notification");
             }
         }
     }

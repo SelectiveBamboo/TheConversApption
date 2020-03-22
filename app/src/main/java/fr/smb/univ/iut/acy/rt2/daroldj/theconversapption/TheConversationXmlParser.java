@@ -1,5 +1,6 @@
 package fr.smb.univ.iut.acy.rt2.daroldj.theconversapption;
 
+import android.util.Log;
 import android.util.Xml;
 
 import org.threeten.bp.Clock;
@@ -37,17 +38,20 @@ public class TheConversationXmlParser {
     //Give a null object as UTCDateLimit if no date limit is required
     private static List<Entry> readFeed(XmlPullParser parser, Instant UTCDateLimit) throws XmlPullParserException, IOException
     {
+        Log.d(TheConversationXmlParser.class.getName(),"start of readFeed" );
+
         List<Entry> entries = new ArrayList<>();
         boolean isOutdated = false;
 
         parser.require(XmlPullParser.START_TAG, ns, "feed");
-        while (parser.next() != XmlPullParser.END_TAG && isOutdated != true)
+        while (parser.next() != XmlPullParser.END_TAG && !isOutdated)
         {
             if (parser.getEventType() != XmlPullParser.START_TAG)
             {
                 continue;
             }
             String name = parser.getName();
+
             // Starts by looking for the entry tag
             if (name.equals("entry"))
             {
@@ -57,6 +61,8 @@ public class TheConversationXmlParser {
 
                 if (UTCDateLimit != null && publishedInstant.isBefore(UTCDateLimit))
                 {
+                    Log.d(TheConversationXmlParser.class.getName(),"isOutdated = true" );
+
                     isOutdated = true;
                 }
                 else
@@ -69,6 +75,7 @@ public class TheConversationXmlParser {
                 skip(parser);
             }
         }
+
         return entries;
     }
 

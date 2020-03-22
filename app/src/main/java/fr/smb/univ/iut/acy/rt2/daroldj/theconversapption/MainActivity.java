@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             //scheduleServiceAlarm(this.getBaseContext());
 
             Intent scheduleNotifIntent = new Intent(getApplicationContext(), scheduleNotifService.class);
-            startService(scheduleNotifIntent);
+            scheduleNotifService.startService(getBaseContext());
         }
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
