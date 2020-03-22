@@ -13,17 +13,13 @@ import androidx.preference.PreferenceManager;
 
 import java.util.Calendar;
 
-
-
 public class scheduleNotifService extends IntentService {
 
     private final static String TAG = scheduleNotifService.class.getName(); //DEBUG
 
     SharedPreferences sharedPrefs;
 
-    public scheduleNotifService() {
-        super("scheduleNotifService");
-    }
+    public scheduleNotifService() { super("scheduleNotifService"); }
 
     @Override
     protected void onHandleIntent(Intent intent)
@@ -34,7 +30,7 @@ public class scheduleNotifService extends IntentService {
 
     private void scheduleServiceAlarm(Context context)
     {
-        String timeNotif = sharedPrefs.getString("set_time", "19:00");
+        String timeNotif = sharedPrefs.getString("set_time_notification", "19:00");
         Log.println(Log.DEBUG, TAG,"timeNotif in service: " + timeNotif);
 
         String[] splittedTimeNotif = timeNotif.split(":");
@@ -53,9 +49,6 @@ public class scheduleNotifService extends IntentService {
         if(cal_alarm.before(cal_now))  //if its in the past increment of a day
             { cal_alarm.add(Calendar.DATE,1); }
 
-        Log.println(Log.ERROR, TAG,"alarmcalendar in service: " + cal_alarm.getTimeInMillis());
-        Log.println(Log.ERROR, TAG,"nowCalendar in service: " + cal_now.getTimeInMillis());
-
         //Setting intent to class where notification will be handled
         Intent intent = new Intent(context, createNotifReceiver.class);
 
@@ -72,6 +65,6 @@ public class scheduleNotifService extends IntentService {
                 2*AlarmManager.INTERVAL_HALF_DAY, alarmIntent);
 
         Toast.makeText(context, "Next notif at: " + cal_now.get(Calendar.HOUR) + ":" + cal_now.get(Calendar.MINUTE), Toast.LENGTH_LONG);
-        Log.println(Log.ERROR, TAG,"next alarm in service : " + alarmManager.getNextAlarmClock().getTriggerTime());
+        Log.println(Log.VERBOSE, TAG,"next alarm in service : " + alarmManager.getNextAlarmClock().getTriggerTime());
     }
 }

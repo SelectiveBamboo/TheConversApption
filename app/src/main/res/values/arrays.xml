@@ -10,17 +10,17 @@
         <item>reply_all</item>
     </string-array>
 
-    <string-array name="settings_multi_select_list_CategoryToFollow">
-        <item>technology</item>
-        <item>politics</item>
-        <item>health</item>
-        <item>ethics</item>
-        <item>environment</item>
-        <item>education</item>
-        <item>business</item>
-        <item>arts</item>
+    <string-array name="settings_multi_select_list_CategoryToFollow_US">
+        <item>Science - Technology</item>
+        <item>Politics - Society</item>
+        <item>Health</item>
+        <item>Ethics - Religion</item>
+        <item>Environment - Energy</item>
+        <item>Education</item>
+        <item>Business - Economy</item>
+        <item>Arts - Culture</item>
     </string-array>
-    <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow">
+    <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow_US">
         <item>https://theconversation.com/us/technology/articles.atom</item>
         <item>https://theconversation.com/us/politics/articles.atom</item>
         <item>https://theconversation.com/us/health/articles.atom</item>
@@ -29,5 +29,196 @@
         <item>https://theconversation.com/us/education/articles.atom</item>
         <item>https://theconversation.com/us/business/articles.atom</item>
         <item>https://theconversation.com/us/arts/articles.atom</item>
+    </string-array>
+
+    <string-array name="settings_multi_select_list_CategoryToFollow_AU">
+        <item>Science - Technology</item>
+        <item>Politics - Society</item>
+        <item>Health - Medicine</item>
+        <item>Environment - Energy</item>
+        <item>Education</item>
+        <item>Cities</item>
+        <item>Business - Economy</item>
+        <item>Arts - Culture</item>
+    </string-array>
+    <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow_AU">
+        <item>https://theconversation.com/au/technology/articles.atom</item>
+        <item>https://theconversation.com/au/politics/articles.atom</item>
+        <item>https://theconversation.com/au/health/articles.atom</item>
+        <item>https://theconversation.com/au/environment/articles.atom</item>
+        <item>https://theconversation.com/au/education/articles.atom</item>
+        <item>https://theconversation.com/au/cities/articles.atom</item>
+        <item>https://theconversation.com/au/business/articles.atom</item>
+        <item>https://theconversation.com/au/arts/articles.atom</item>
+    </string-array>
+
+    <string-array name="settings_multi_select_list_CategoryToFollow_AF">
+        <item>Science - Technology</item>
+        <item>Politics</item>
+        <item>Health - Medicine</item>
+        <item>Environment - Energy</item>
+        <item>Education</item>
+        <item>Business - Economy</item>
+        <item>Arts - Culture</item>
+    </string-array>
+    <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow_AF">
+        <item>https://theconversation.com/africa/technology/articles.atom</item>
+        <item>https://theconversation.com/africa/politics/articles.atom</item>
+        <item>https://theconversation.com/africa/health/articles.atom</item>
+        <item>https://theconversation.com/africa/ethics/articles.atom</item>
+        <item>https://theconversation.com/africa/environment/articles.atom</item>
+        <item>https://theconversation.com/africa/education/articles.atom</item>
+        <item>https://theconversation.com/africa/business/articles.atom</item>
+        <item>https://theconversation.com/africa/arts/articles.atom</item>
+    </string-array>
+
+    <string-array name="settings_multi_select_list_CategoryToFollow_FR">
+        <item>Mondes francophones</item>
+        <item>Science</item>
+        <item>Santé</item>
+        <item>Politique - Société</item>
+        <item>International</item>
+        <item>Environnement</item>
+        <item>Éducation</item>
+        <item>Économie</item>
+        <item>Culture</item>
+    </string-array>
+    <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow_FR">
+        <item>https://theconversation.com/fr/mondes-francophones/articles.atom</item>
+        <item>https://theconversation.com/fr/technologie/articles.atom</item>
+        <item>https://theconversation.com/fr/sante/articles.atom</item>
+        <item>https://theconversation.com/fr/politique/articles.atom</item>
+        <item>https://theconversation.com/fr/international/articles.atom</item>
+        <item>https://theconversation.com/fr/environnement/articles.atom</item>
+        <item>https://theconversation.com/fr/education/articles.atom</item>
+        <item>https://theconversation.com/fr/economie/articles.atom</item>
+        <item>https://theconversation.com/fr/arts/articles.atom</item>
+    </string-array>
+
+    <string-array name="settings_multi_select_list_CategoryToFollow_UK">
+        <item>Science - Technology</item>
+        <item>Politics - Society</item>
+        <item>Health - Medicine</item>
+        <item>Environment - Energy</item>
+        <item>Education</item>
+        <item>Cities</item>
+        <item>Business - Economy</item>
+        <item>Arts - Culture</item>
+    </string-array>
+    <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow_UK">
+        <item>https://theconversation.com/uk/technology/articles.atom</item>
+        <item>https://theconversation.com/uk/politics/articles.atom</item>
+        <item>https://theconversation.com/uk/health/articles.atom</item>
+        <item>https://theconversation.com/uk/environment/articles.atom</item>
+        <item>https://theconversation.com/uk/education/articles.atom</item>
+        <item>https://theconversation.com/uk/cities/articles.atom</item>
+        <item>https://theconversation.com/uk/business/articles.atom</item>
+        <item>https://theconversation.com/uk/arts/articles.atom</item>
+    </string-array>
+
+    <string-array name="settings_multi_select_list_CategoryToFollow_GP">
+        <item>Science - Technology</item>
+        <item>Politics - Society</item>
+        <item>Health - Medicine</item>
+        <item>Environment - Energy</item>
+        <item>Business - Economy</item>
+        <item>Arts - Culture</item>
+    </string-array>
+    <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow_GP">
+        <item>https://theconversation.com/global/technology/articles.atom</item>
+        <item>https://theconversation.com/global/politics/articles.atom</item>
+        <item>https://theconversation.com/global/health/articles.atom</item>
+        <item>https://theconversation.com/global/environment/articles.atom</item>
+        <item>https://theconversation.com/global/business/articles.atom</item>
+        <item>https://theconversation.com/global/arts/articles.atom</item>
+    </string-array>
+
+    <string-array name="settings_multi_select_list_CategoryToFollow_CA_en">
+        <item>Science - Technology</item>
+        <item>Politics - Society</item>
+        <item>Health</item>
+        <item>Environment - Energy</item>
+        <item>Education</item>
+        <item>Culture - Society</item>
+        <item>Business - Economy</item>
+        <item>Arts</item>
+    </string-array>
+    <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow_CA_en">
+        <item>https://theconversation.com/ca/technology/articles.atom</item>
+        <item>https://theconversation.com/ca/politics/articles.atom</item>
+        <item>https://theconversation.com/ca/health/articles.atom</item>
+        <item>https://theconversation.com/ca/environment/articles.atom</item>
+        <item>https://theconversation.com/ca/education/articles.atom</item>
+        <item>https://theconversation.com/ca/culture/articles.atom</item>
+        <item>https://theconversation.com/ca/business/articles.atom</item>
+        <item>https://theconversation.com/ca/arts/articles.atom</item>
+    </string-array>
+
+    <string-array name="settings_multi_select_list_CategoryToFollow_ID">
+        <item>Lingkungan Hidup</item>
+        <item>Seni - Budaya</item>
+        <item>Sains - Teknologi</item>
+        <item>Politik - Masyarakat</item>
+        <item>Pendidikan</item>
+        <item>Kota</item>
+        <item>Kesehatan</item>
+        <item>Bisnis - Ekonomi</item>
+    </string-array>
+    <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow_ID">
+        <item>https://theconversation.com/id/lingkungan-hidup/articles.atom</item>
+        <item>https://theconversation.com/id/budaya/articles.atom</item>
+        <item>https://theconversation.com/id/sains/articles.atom</item>
+        <item>https://theconversation.com/id/politik/articles.atom</item>
+        <item>https://theconversation.com/id/pendidikan/articles.atom</item>
+        <item>https://theconversation.com/id/kota/articles.atom</item>
+        <item>https://theconversation.com/id/kesehatan/articles.atom</item>
+        <item>https://theconversation.com/id/bisnis/articles.atom</item>
+    </string-array>
+
+    <string-array name="settings_multi_select_list_CategoryToFollow_ES">
+        <item>Politica - Sociedad</item>
+        <item>Medioambiente - Energia</item>
+        <item>Medicina - Salud</item>
+        <item>Educacion</item>
+        <item>Economia</item>
+        <item>Cultura</item>
+        <item>Ciencia - tecnologia</item>
+    </string-array>
+    <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow_ES">
+        <item>https://theconversation.com/es/sociedad/articles.atom</item>
+        <item>https://theconversation.com/es/medioambiente/articles.atom</item>
+        <item>https://theconversation.com/es/medicina/articles.atom</item>
+        <item>https://theconversation.com/es/educacion/articles.atom</item>
+        <item>https://theconversation.com/es/economia/articles.atom</item>
+        <item>https://theconversation.com/es/cultura/articles.atom</item>
+        <item>https://theconversation.com/es/ciencia/articles.atom</item>
+    </string-array>
+
+    <string-array name="settings_multi_select_list_CategoryToFollow_CA_fr">
+        <item>Société</item>
+        <item>Science et Technologie</item>
+        <item>Santé</item>
+        <item>Politique</item>
+        <item>Environnement</item>
+        <item>Éducation</item>
+        <item>Arts et Culture</item>
+        <item>Affaires et Économie</item>
+    </string-array>
+    <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow_CA_fr">
+        <item>https://theconversation.com/ca-fr/societe/articles.atom</item>
+        <item>https://theconversation.com/ca-fr/science-et-technologie/articles.atom</item>
+        <item>https://theconversation.com/ca-fr/sante/articles.atom</item>
+        <item>https://theconversation.com/ca-fr/politique/articles.atom</item>
+        <item>https://theconversation.com/ca-fr/environnement/articles.atom</item>
+        <item>https://theconversation.com/ca-fr/education/articles.atom</item>
+        <item>https://theconversation.com/ca-fr/arts-et-culture/articles.atom</item>
+        <item>https://theconversation.com/ca-fr/affairese-et-economie/articles.atom</item>
+    </string-array>
+
+    <string-array name="settings_multi_select_list_CategoryToFollow_NL">
+        <item>All</item>
+    </string-array>
+    <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow_NL">
+        <item>https://theconversation.com/nz/articles.atom</item>
     </string-array>
 </resources>

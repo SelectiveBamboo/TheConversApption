@@ -39,7 +39,16 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        scheduleServiceAlarm(this.getBaseContext());
+        boolean isNotifEnabled = sharedPrefs.getBoolean("switch_allow_notif", true);
+        Log.d(TAG, "isNotifEnabled: " + isNotifEnabled);
+
+        if (isNotifEnabled)
+        {
+            //scheduleServiceAlarm(this.getBaseContext());
+
+            Intent scheduleNotifIntent = new Intent(getApplicationContext(), scheduleNotifService.class);
+            startService(scheduleNotifIntent);
+        }
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
                 != PackageManager.PERMISSION_GRANTED)
@@ -52,9 +61,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void scheduleServiceAlarm(Context context) {
-        String timeNotif = sharedPrefs.getString("set_time", "19:00");
+    public void scheduleServiceAlarm(Context context)
+    {
+        String timeNotif = sharedPrefs.getString("set_time_notification", "19:00");
         Log.println(Log.DEBUG, TAG,"timeNotif : " + timeNotif);
+
 
        String[] splittedTimeNotif = timeNotif.split(":");
 
