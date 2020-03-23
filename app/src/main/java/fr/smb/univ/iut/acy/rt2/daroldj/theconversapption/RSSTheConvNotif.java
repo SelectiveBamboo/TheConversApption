@@ -114,6 +114,7 @@ public class RSSTheConvNotif extends JobIntentService {
                 for (String rssLink : rssLinks)
                 {
                     Log.d(TAG, rssLink);
+
                     try {
                         inputStreamRss  = downloadUrl(rssLink);
                     }
@@ -191,12 +192,14 @@ public class RSSTheConvNotif extends JobIntentService {
 //        return builder;
 //    }
 
-    private void createNotificationChannel() {
+    private void createNotificationChannel()
+    {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         Log.e(TAG, "notificationChannelCreated !" );
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
             CharSequence name = CHANNEL_NAME;
             String description = CHANNEL_DESCRIPTION;
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -261,7 +264,9 @@ public class RSSTheConvNotif extends JobIntentService {
             InetAddress ipAddr = InetAddress.getByName(websiteURL);
             return !ipAddr.equals("");
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             return false;
         }
     }

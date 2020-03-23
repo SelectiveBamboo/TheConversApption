@@ -116,9 +116,19 @@ public class MainActivity extends AppCompatActivity {
 
     public void openSettings(MenuItem menuItem)
     {
-        Log.d(TAG, "modifyIp");
+        Log.d(TAG, "openSettings");
 
         Intent intent = new Intent(this, SettingsActivity.class);
+
+        super.startActivity(intent);
+        super.finish();
+    }
+
+    public void askFeedback(MenuItem menuItem)
+    {
+        Log.d(TAG, "askFeedback");
+
+        Intent intent = new Intent(this, askFeedbackActivity.class);
 
         super.startActivity(intent);
         super.finish();
