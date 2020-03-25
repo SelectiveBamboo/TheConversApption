@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -15,18 +16,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
     private final static String TAG = MainActivity.class.getName(); //DEBUG
 
     private WebView webView;
+
+    private Context context = this;
+
+    private String url = "https://theconversation.com/fr";
+    final static String REGEX_URL_NOT_ARTICLE_THECONV = "theconversation.com/[(fr)(us)(ca)(global)(africa)(ca-fr)(id)(es)(nz)(uk)(au)]";
 
     SharedPreferences sharedPrefs;
 
@@ -47,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             //scheduleServiceAlarm(this.getBaseContext());
 
             Intent scheduleNotifIntent = new Intent(getApplicationContext(), scheduleNotifService.class);
-            scheduleNotifService.startService(getBaseContext());
+            scheduleNotifService.startService(context);
         }
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
@@ -57,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            loadWebViewAndURL(this.getBaseContext(), "https://theconversation.com/fr");
+            loadWebViewAndURL(context);
         }
     }
 
@@ -134,22 +142,67 @@ public class MainActivity extends AppCompatActivity {
         super.finish();
     }
 
-    protected void loadWebViewAndURL(Context context, String url)
+    protected void loadWebViewAndURL(final Context context)
     {
-        webView = new WebView(context);
-        webView.setWebViewClient(new TheConvWebViewClient());
+        webView = (WebView)findViewById(R.id.webviewMain);
+        webView.setWebViewClient(new WebViewClient() {
+                                     @Override
+                                     public boolean shouldOverrideUrlLoading(WebView view, String urlNewString)
+                                     {
+                                         if(!Pattern.matches(REGEX_URL_NOT_ARTICLE_THECONV, urlNewString))
+                                         {
+                                             Intent i = new Intent(context, ReadingArticleActivity.class);
+                                             i.putExtra("articleUrl", urlNewString);
+                                             context.startActivity(i);
+                                             return true;
+                                         }
 
-        setContentView(webView);
+                                         /*
+                                         PROBLEM HEEEEEEEEERE
+                                          */
 
+
+                                         if (Uri.parse(urlNewString).getHost().equals("theconversation.com"))
+                                         { return false; }
+                                         else
+                                         { return super.shouldOverrideUrlLoading(view, urlNewString); }
+                                     }
+                                 });
+        
         WebSettings webSettings = webView.getSettings();
 
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowContentAccess(true);
         webSettings.setDisplayZoomControls(true);
-        //webSettings.setForceDark(WebSettings.FORCE_DARK_ON);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+//        {
+//            webSettings.setForceDark(WebSettings.FORCE_DARK_ON);
+//        }
 
+        //setContentView(webView);
+        webView.loadUrl(url);
+    }
 
-        setContentView(webView);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            // Check if user triggered a refresh:
+            case R.id.icon_refresh:
+                Log.i(TAG, "Refresh menu item selected");
+                onRefresh();
+
+                return true;
+
+            default:
+                // User didn't trigger a refresh, let the superclass handle this action
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void onRefresh()
+    {
+        Log.d(TAG, "on refresh");
         webView.loadUrl(url);
     }
 

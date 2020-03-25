@@ -44,14 +44,12 @@ public class RSSTheConvNotif extends JobIntentService {
 
     private static final  String CHANNEL_ID = "channel_TheConversApption";
 
-    public static final String CHANNEL_NAME = "fr.smb.univ.acy.rt2.daroldj.theconversapption.NotifRSS";
-    public static final String CHANNEL_DESCRIPTION = "A channel for notification";
-
-    private List<String> listURLs = new ArrayList<>();
+    public static final String CHANNEL_NAME = "New articles";
+    public static final String CHANNEL_DESCRIPTION = "Notifications for the new articles";
 
     private final static String TAG = RSSTheConvNotif.class.getName();
 
-    private static final String ACTION_NOTIF = "fr.smb.univ.iut.acy.rt2.daroldj.theconversapption.action.notif";
+    private static final String ACTION_NOTIF = "Action.notif";
 
     Context context = this;
 
@@ -137,6 +135,7 @@ public class RSSTheConvNotif extends JobIntentService {
                         {
                             Entry entry = entries.get(i);
 
+                            String titleInEntry = entry.getTitle();
                             String linkInEntry = entry.getLink();
                             String summaryInEntry = entry.getSummary();
 
@@ -148,10 +147,10 @@ public class RSSTheConvNotif extends JobIntentService {
 
                             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                                     .setSmallIcon(R.drawable.ic_launcher_foreground)
-                                    .setContentTitle(summaryInEntry)
+                                    .setContentTitle(titleInEntry)
                                     .setContentText(summaryInEntry)
                                     .setStyle(new NotificationCompat.BigTextStyle()
-                                            .bigText(entry.getSummary()))
+                                            .bigText(summaryInEntry))
                                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                                     .setCategory(NotificationCompat.CATEGORY_SOCIAL)
                                     .setContentIntent(pendingIntent)
@@ -200,11 +199,9 @@ public class RSSTheConvNotif extends JobIntentService {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
-            CharSequence name = CHANNEL_NAME;
-            String description = CHANNEL_DESCRIPTION;
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
+            channel.setDescription(CHANNEL_DESCRIPTION);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
