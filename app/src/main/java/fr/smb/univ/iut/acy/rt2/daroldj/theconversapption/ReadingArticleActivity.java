@@ -57,19 +57,23 @@ public class ReadingArticleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                final String pathFilename = context.getFilesDir().getPath() + File.separator + webView.getTitle();
-                webView.saveWebArchive(pathFilename);
 
-                Snackbar.make(view, "Stop annoying the panic button, it's just corona bro. Internet will still be. \n" + webView.getTitle() + " has been saved", Snackbar.LENGTH_LONG)
-                        .setAction("Action", new View.OnClickListener() {
+                final String nameOfArchivedFile = webView.getUrl().substring(28);
+
+                final File archiveFile = new File(context.getFilesDir(), nameOfArchivedFile);
+                webView.saveWebArchive(archiveFile.getAbsolutePath());
+
+                Snackbar.make(view, "Stop annoying the panic button, it's just a virus bro. Internet will still be. \n" + webView.getTitle() + " has been saved", Snackbar.LENGTH_LONG)
+                        .setAction("Open", new View.OnClickListener() {
                             @Override
                             public void onClick(View v)
                             {
-                                webView.loadUrl("file:/"+pathFilename);
+                                webView.loadUrl(
+                                        String.valueOf(archiveFile.toURI())
+                                );
                             }
-                        }).show();
-
-                //Toast.makeText(context, , Toast.LENGTH_LONG).show();
+                        })
+                        .show();
             }
         });
 
