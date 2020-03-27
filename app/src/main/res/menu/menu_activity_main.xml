@@ -6,13 +6,14 @@
 
     <!-- "Mark Favorite", should appear as action button if possible -->
     <item android:id="@+id/icon_refresh"
-        android:icon="@drawable/ic_autorenew_white_24dp"
+        android:icon="@drawable/ic_autorenew_black_24dp"
         android:title="refresh"
+        android:onClick="refresh"
         app:showAsAction="ifRoom"/>
 
 
     <item android:id="@+id/icon_share"
-        android:icon="@drawable/ic_share_white_24dp"
+        android:icon="@drawable/ic_share_black_24dp"
         android:title="share"
         app:showAsAction="ifRoom"/>
 

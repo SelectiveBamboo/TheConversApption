@@ -194,7 +194,13 @@ public class MainActivity extends AppCompatActivity {
     public void onRefresh()
     {
         Log.d(TAG, "on refresh");
-        webView.loadUrl(url);
+        webView.reload();
+    }
+
+    public void refresh(MenuItem item)
+    {
+        Log.d(TAG, "refresh from button");
+        webView.reload();
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event)
@@ -233,4 +239,6 @@ public class MainActivity extends AppCompatActivity {
 
         super.onDestroy();
     }
+
+
 }
