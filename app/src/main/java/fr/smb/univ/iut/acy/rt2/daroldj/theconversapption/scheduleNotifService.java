@@ -20,6 +20,7 @@ public class scheduleNotifService extends JobIntentService {
 
     public static void startService(Context context)
     {
+        Log.e(TAG, "schedule notif service");
         enqueueWork(context, scheduleNotifService.class, 1, new Intent());
     }
 

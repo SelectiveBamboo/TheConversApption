@@ -71,15 +71,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
 
                 <action android:name="android.intent.action.VIEW" />
-
-                <!-- <data -->
-                <!-- android:host="theconversationfrance.cmail19.com" -->
-                <!-- android:scheme="https" /> -->
-
-
-                <!-- <category android:name="android.intent.category.DEFAULT" /> -->
-                <!-- &lt;!&ndash; The BROWSABLE category is required to get links from web pages. &ndash;&gt; -->
-                <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
             </intent-filter>
         </activity>
     </application>

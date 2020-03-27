@@ -27,7 +27,6 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -65,21 +64,12 @@ public class RSSTheConvNotif extends JobIntentService {
     {
         super.onCreate();
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Log.e(TAG, "Service's been created in RSSTheConvNotif");
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        // TODO Auto-generated method stub
-        Log.d(TAG, "Service's been destroyed in RSSTheConvNotif");
-        super.onDestroy();
     }
 
     @Override
     protected void onHandleWork(Intent intent)
     {
-        Log.d(TAG, "Handling intent in RSSTheConvNotif");
+        Log.v(TAG, "Handling intent in RSSTheConvNotif");
 
         Set<String> rssLinks = new HashSet<>();
 
@@ -99,9 +89,7 @@ public class RSSTheConvNotif extends JobIntentService {
 
         if (isWebsiteReachable("theconversation.com"))
         {
-            Log.d(TAG, "Website reachable");
-
-            List<File> fetchedFiles = new ArrayList<>();
+            Log.v(TAG, "theconversation is reachable");
 
             InputStream inputStreamRss = null;
 
@@ -117,16 +105,6 @@ public class RSSTheConvNotif extends JobIntentService {
                         inputStreamRss  = downloadUrl(rssLink);
                     }
                     catch (Exception e) { e.printStackTrace(); }
-
-              /*  try {
-                    File file1 = do
-                        File file = fetchXML(rssLink, context);
-                    fetchedFiles.add(file);
-                } catch (Exception e) { e.printStackTrace(); }
-              */
-
-                    // for (int i = 0; i < fetchedFiles.size(); i++) {
-                    // File file = fetchedFiles.get(i);
 
                     try {
                         List<Entry> entries = TheConversationXmlParser.parseTilADayAgo(inputStreamRss);
@@ -146,7 +124,8 @@ public class RSSTheConvNotif extends JobIntentService {
                                     PendingIntent.getActivity(context, 74940, intentOnClick, PendingIntent.FLAG_UPDATE_CURRENT);
 
                             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                                    .setSmallIcon(R.drawable.ic_notififcation)
+                                    .setColor(0xD8352A)
                                     .setContentTitle(titleInEntry)
                                     .setContentText(summaryInEntry)
                                     .setStyle(new NotificationCompat.BigTextStyle()
@@ -157,12 +136,12 @@ public class RSSTheConvNotif extends JobIntentService {
                                     .setAutoCancel(true);
 
                             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-                            // notificationId is a unique int for each notification that you must define
+                            // notificationId is a unique int for each notification
                             notificationManager.notify(n, builder.build());
 
                             n++;
 
-                            Log.i(TAG, "Notification sent.");
+                            Log.v(TAG, "Notification sent.");
                         }
                     }
                     catch (FileNotFoundException e) { Log.e(TAG, "error FileNotFoundException : " + e.getMessage()); }
@@ -173,29 +152,14 @@ public class RSSTheConvNotif extends JobIntentService {
             }
             else
             {
-                Log.d(TAG, "There was not any feed selected for notification");
+                Log.v(TAG, "There was not any feed selected for notification");
             }
         }
     }
 
-//    public NotificationCompat.Builder buildLocalNotification(Context context, PendingIntent pendingIntent)
-//    {
-//        NotificationCompat.Builder builder =
-//                (NotificationCompat.Builder) new NotificationCompat.Builder(context)
-//                        .setContentIntent(pendingIntent)
-//                        .setSmallIcon(android.R.drawable.arrow_up_float)
-//                        .setContentTitle()
-//                        .setContentText()
-//                        .setAutoCancel(true);
-//
-//        return builder;
-//    }
-
     private void createNotificationChannel()
     {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        Log.e(TAG, "notificationChannelCreated !" );
+        Log.v(TAG, "notificationChannelCreated !" );
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {

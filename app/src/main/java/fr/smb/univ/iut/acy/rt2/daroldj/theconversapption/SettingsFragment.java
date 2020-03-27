@@ -122,7 +122,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements TimePi
         sharedPrefs.edit().putString("set_time_notification", time).apply();
 
         Intent scheduleNotifIntent = new Intent(getContext(), scheduleNotifService.class);
-        scheduleNotifService.startService(getContext());
+        scheduleNotifService.startService(context);
 
         Toast.makeText(getContext(), "Notif : " + time, Toast.LENGTH_LONG).show();
         // if you use setOnPreferenceChangeListener on it, use setTime.callChangeListener(time);
