@@ -19,10 +19,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 
 import java.util.Calendar;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
     private Context context = this;
 
     private String url = "https://theconversation.com/fr";
-    final static String REGEX_URL_NOT_ARTICLE_THECONV = "theconversation.com/[(fr)(us)(ca)(global)(africa)(ca-fr)(id)(es)(nz)(uk)(au)]";
+    final static String REGEX_URL_NOT_ARTICLE_THECONV = "theconversation.com/((fr/)|(us/)|(ca/)|(global/)|(africa/)|(ca-fr/)|(id/)|(es/)|(nz/)|(uk/)|(au/))";
+    Pattern patternArticleUrl = Pattern.compile(REGEX_URL_NOT_ARTICLE_THECONV);
+
 
     SharedPreferences sharedPrefs;
 
@@ -44,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMain);
+        setSupportActionBar(toolbar);
 
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
@@ -149,7 +156,8 @@ public class MainActivity extends AppCompatActivity {
                                      @Override
                                      public boolean shouldOverrideUrlLoading(WebView view, String urlNewString)
                                      {
-                                         if(!Pattern.matches(REGEX_URL_NOT_ARTICLE_THECONV, urlNewString))
+                                         Matcher matcher = patternArticleUrl.matcher(urlNewString);
+                                         if(!matcher.find())
                                          {
                                              Intent i = new Intent(context, ReadingArticleActivity.class);
                                              i.putExtra("articleUrl", urlNewString);
@@ -183,23 +191,6 @@ public class MainActivity extends AppCompatActivity {
         webView.loadUrl(url);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
-            // Check if user triggered a refresh:
-            case R.id.icon_refresh:
-                Log.i(TAG, "Refresh menu item selected");
-                onRefresh();
-
-                return true;
-
-            default:
-                // User didn't trigger a refresh, let the superclass handle this action
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     public void onRefresh()
     {
         Log.d(TAG, "on refresh");
@@ -214,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
             webView.goBack();
             return true;
         }
+
         return super.onKeyDown(keyCode, event);
     }
 

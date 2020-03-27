@@ -10,10 +10,6 @@
         android:title="refresh"
         app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/icon_download"
-        android:icon="@drawable/ic_file_download_white_24dp"
-        android:title="download"
-        app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/icon_share"
         android:icon="@drawable/ic_share_white_24dp"

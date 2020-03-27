@@ -14,7 +14,9 @@
             app:title="Set at which time you want to be notified"
             android:id="@+id/NotificationTimePicker"/>
 
-        <PreferenceCategory android:title="Category">
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Category">
 
             <MultiSelectListPreference
                 android:dialogTitle="Select categories you want to follow"
@@ -94,14 +96,5 @@
                 android:key="multiselect_NL_feeds"
                 android:title="New Zealand feeds to follow"/>
         </PreferenceCategory>
-
-        <EditTextPreference
-            android:defaultValue="Default value"
-            android:key="edit_text_preference_1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="Edit text preference" />
-
-    </PreferenceCategory>
 
 </PreferenceScreen>

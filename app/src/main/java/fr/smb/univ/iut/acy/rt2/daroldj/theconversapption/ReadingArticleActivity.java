@@ -28,8 +28,6 @@ public class ReadingArticleActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading_article);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         articleUrl = getIntent().getStringExtra("articleUrl");
 
@@ -45,6 +43,22 @@ public class ReadingArticleActivity extends AppCompatActivity {
         Log.d(getClass().getName(), articleUrl);
 
         loadWebViewAndURL(context);
+    }
+
+    private void setToolbar()
+    {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarReadingArticle);
+        setSupportActionBar(toolbar);
+        setTitle("");
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                finish();
+            }
+        });
     }
 
     protected void loadWebViewAndURL(final Context context)
