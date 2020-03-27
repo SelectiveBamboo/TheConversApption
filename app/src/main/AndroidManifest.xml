@@ -14,24 +14,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
+        <activity
+            android:name=".ReadArticleActivity"
+            android:label="@string/title_activity_read_article"
+            android:theme="@style/NoActionBar"></activity>
         <activity
             android:name=".ReadingArticleActivity"
             android:label="@string/title_activity_reading_article"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity"/>
-
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".askFeedbackActivity" />
 
         <service
             android:name=".scheduleNotifService"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
         <service
             android:name=".RSSTheConvNotif"
             android:exported="false"
@@ -41,7 +41,6 @@
             android:name=".createNotifReceiver"
             android:enabled="true"
             android:exported="false" />
-
         <receiver
             android:name=".bootReceiverNotif"
             android:enabled="true">

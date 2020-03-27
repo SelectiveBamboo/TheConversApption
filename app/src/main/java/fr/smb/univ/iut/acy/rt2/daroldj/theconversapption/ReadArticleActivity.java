@@ -20,7 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-public class ReadingArticleActivity extends AppCompatActivity {
+public class ReadArticleActivity extends AppCompatActivity {
 
     String articleUrl;
 
@@ -34,40 +34,24 @@ public class ReadingArticleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reading_article);
+        setContentView(R.layout.activity_read_article);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        setToolbar();
-
-        articleUrl = getIntent().getStringExtra("articleUrl");
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.downloadArticle_fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Please stop annoying the panic button, it's just corona bro. ", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "What a nice button, isn't it ? ", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
 
+        articleUrl = getIntent().getStringExtra("articleUrl");
+
         Log.d(getClass().getName(), articleUrl);
 
         loadWebViewAndURL(context);
-    }
-
-    private void setToolbar()
-    {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarReadingArticle);
-        setSupportActionBar(toolbar);
-        setTitle("");
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                finish();
-            }
-        });
     }
 
     protected void loadWebViewAndURL(final Context context)
@@ -167,7 +151,7 @@ public class ReadingArticleActivity extends AppCompatActivity {
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "Have a look at this, great articles deserve great audience ! :) \n\n" +  webView.getUrl());
+        sendIntent.putExtra(Intent.EXTRA_TEXT, webView.getUrl());
         sendIntent.setType("text/plain");
 
         Intent shareIntent = Intent.createChooser(sendIntent, null);
@@ -192,4 +176,5 @@ public class ReadingArticleActivity extends AppCompatActivity {
 
         return super.onKeyDown(keyCode, event);
     }
+
 }
