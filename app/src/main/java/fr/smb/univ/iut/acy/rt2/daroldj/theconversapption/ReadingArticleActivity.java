@@ -20,6 +20,8 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
+
 public class ReadingArticleActivity extends AppCompatActivity {
 
     String articleUrl;
@@ -30,6 +32,8 @@ public class ReadingArticleActivity extends AppCompatActivity {
 
     String TAG = this.getClass().getName();
 
+    String data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -38,14 +42,34 @@ public class ReadingArticleActivity extends AppCompatActivity {
 
         setToolbar();
 
-        articleUrl = getIntent().getStringExtra("articleUrl");
+        data = getIntent().getDataString();
+        if (data != null && data.length() > 11)
+        {
+            articleUrl = data;
+        }
+        else
+        {
+            articleUrl = getIntent().getStringExtra("articleUrl");
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.downloadArticle_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Please stop annoying the panic button, it's just corona bro. ", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View view)
+            {
+                final String pathFilename = context.getFilesDir().getPath() + File.separator + webView.getTitle();
+                webView.saveWebArchive(pathFilename);
+
+                Snackbar.make(view, "Stop annoying the panic button, it's just corona bro. Internet will still be. \n" + webView.getTitle() + " has been saved", Snackbar.LENGTH_LONG)
+                        .setAction("Action", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v)
+                            {
+                                webView.loadUrl("file:/"+pathFilename);
+                            }
+                        }).show();
+
+                //Toast.makeText(context, , Toast.LENGTH_LONG).show();
             }
         });
 
@@ -120,6 +144,7 @@ public class ReadingArticleActivity extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowContentAccess(true);
         webSettings.setDisplayZoomControls(true);
+        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
 //        {
@@ -170,7 +195,7 @@ public class ReadingArticleActivity extends AppCompatActivity {
         sendIntent.putExtra(Intent.EXTRA_TEXT, "Have a look at this, great articles deserve great audience ! :) \n\n" +  webView.getUrl());
         sendIntent.setType("text/plain");
 
-        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        Intent shareIntent = Intent.createChooser(sendIntent, "Choose how you share");
         startActivity(shareIntent);
 
     }

@@ -66,6 +66,7 @@ public class Sender extends Thread {
             }
             catch (IOException e1)
             {
+                e1.printStackTrace();
                 Log.e(TAG, "error while closing socket");
 
                 this.activity.runOnUiThread(new Runnable()
@@ -77,7 +78,6 @@ public class Sender extends Thread {
                     }
                 });
 
-                e1.printStackTrace();
             }
         }
 
