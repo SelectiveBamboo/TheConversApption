@@ -24,15 +24,15 @@ import java.io.File;
 
 public class ReadingArticleActivity extends AppCompatActivity {
 
-    String articleUrl;
+    private String articleUrl;
 
     private WebView webView;
 
     private Context context = this;
 
-    String TAG = this.getClass().getName();
+    private String TAG = this.getClass().getName();
 
-    String data;
+    private String data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -57,14 +57,13 @@ public class ReadingArticleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-
                 final String nameOfArchivedFile = webView.getUrl().substring(28);
 
                 final File archiveFile = new File(context.getFilesDir(), nameOfArchivedFile);
                 webView.saveWebArchive(archiveFile.getAbsolutePath());
 
-                Snackbar.make(view, "Stop annoying the panic button, it's just a virus bro. Internet will still be. \n" + webView.getTitle() + " has been saved", Snackbar.LENGTH_LONG)
-                        .setAction("Open", new View.OnClickListener() {
+                Snackbar.make(view, "Stop annoying the Panic Button, it's just a virus bro. Internet will still be.", Snackbar.LENGTH_LONG)
+                        .setAction("Open file", new View.OnClickListener() {
                             @Override
                             public void onClick(View v)
                             {
@@ -77,9 +76,7 @@ public class ReadingArticleActivity extends AppCompatActivity {
             }
         });
 
-        Log.d(getClass().getName(), articleUrl);
-
-        loadWebViewAndURL(context);
+        loadWebViewAndURL();
     }
 
     private void setToolbar()
@@ -98,7 +95,7 @@ public class ReadingArticleActivity extends AppCompatActivity {
         });
     }
 
-    protected void loadWebViewAndURL(final Context context)
+    protected void loadWebViewAndURL()
     {
         webView = (WebView)findViewById(R.id.webviewArticle);
 
@@ -110,7 +107,9 @@ public class ReadingArticleActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url)
             {
-                Log.e(this.getClass().getName(), "onPageFinished");
+                // A failed attempt to apply javascript code to a webpage using webView..
+                //But keeping hope so keeping it.
+
                 view.loadUrl("javascript:(function hideStuff(){\n" +
                         "  var el = document.querySelector('#article');\n" +
                         "  var node, nodes = [];\n" +
@@ -150,19 +149,19 @@ public class ReadingArticleActivity extends AppCompatActivity {
         webSettings.setDisplayZoomControls(true);
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
+        //for future dark mode availability
+
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
 //        {
 //            webSettings.setForceDark(WebSettings.FORCE_DARK_ON);
 //        }
 
-        //setContentView(webView);
         webView.loadUrl(articleUrl);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        Log.d(TAG, "onCreateOptionsMenu");
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_activity_reading_article, menu);
@@ -171,8 +170,6 @@ public class ReadingArticleActivity extends AppCompatActivity {
 
     public void askFeedback(MenuItem menuItem)
     {
-        Log.d(TAG, "askFeedback");
-
         Intent intent = new Intent(this, askFeedbackActivity.class);
 
         super.startActivity(intent);
@@ -181,8 +178,6 @@ public class ReadingArticleActivity extends AppCompatActivity {
 
     public void openSettings(MenuItem menuItem)
     {
-        Log.d(TAG, "openSettings");
-
         Intent intent = new Intent(this, SettingsActivity.class);
 
         super.startActivity(intent);
@@ -191,22 +186,20 @@ public class ReadingArticleActivity extends AppCompatActivity {
 
     public void shareLink(MenuItem item)
     {
-        Log.d(TAG, "the content of webview.getTitle : " + webView.getTitle());
-        Log.d(TAG, "sharing link");
+        Log.d(TAG, "Sharing link");
 
         Intent sendIntent = new Intent();
+
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, "Have a look at this, great articles deserve great audience ! :) \n\n" +  webView.getUrl());
         sendIntent.setType("text/plain");
 
-        Intent shareIntent = Intent.createChooser(sendIntent, "Choose how you share");
+        Intent shareIntent = Intent.createChooser(sendIntent, "To choose how you share");
         startActivity(shareIntent);
-
     }
 
     public void refresh(MenuItem item)
     {
-        Log.d(TAG, "refresh from button");
         webView.reload();
     }
 

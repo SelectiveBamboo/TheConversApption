@@ -198,8 +198,6 @@ public class RSSTheConvNotif extends JobIntentService {
         }
         catch (IOException e) { e.printStackTrace(); }
 
-       // File fileFetchedXml = new File(context.getCacheDir(), filename);
-
         try (FileOutputStream fos = context.openFileOutput(filename, Context.MODE_PRIVATE))
         {
             URLConnection cn = new URL(xmlUrl).openConnection();

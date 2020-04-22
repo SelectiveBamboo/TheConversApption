@@ -19,14 +19,16 @@ public class TimePickerFragment extends DialogFragment {
     private int hours;
     private int minutes;
 
-    TimePickerFragment(TimePickerDialog.OnTimeSetListener onTimeSetListener, int hours, int minutes) {
+    TimePickerFragment(TimePickerDialog.OnTimeSetListener onTimeSetListener, int hours, int minutes)
+    {
         this.onTimeSetListener = onTimeSetListener;
         this.hours = hours;
         this.minutes = minutes;
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState)
+    {
         return new TimePickerDialog(getActivity(), R.style.dateTimePicker,
                 onTimeSetListener, hours, minutes, DateFormat.is24HourFormat(getActivity()));
     }

@@ -38,7 +38,7 @@ public class TheConversationXmlParser {
     //Give a null object as UTCDateLimit if no date limit is required
     private static List<Entry> readFeed(XmlPullParser parser, Instant UTCDateLimit) throws XmlPullParserException, IOException
     {
-        Log.d(TheConversationXmlParser.class.getName(),"start of readFeed" );
+        Log.v(TheConversationXmlParser.class.getName(),"start of readFeed" );
 
         List<Entry> entries = new ArrayList<>();
         boolean isOutdated = false;

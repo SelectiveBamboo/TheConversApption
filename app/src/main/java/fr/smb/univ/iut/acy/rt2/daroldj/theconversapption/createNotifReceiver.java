@@ -25,8 +25,7 @@ public class createNotifReceiver extends BroadcastReceiver {
 
         if (isNotifEnabed)
         {
-            Intent intent1 = new Intent(context, RSSTheConvNotif.class);
-            Log.e(this.getClass().getName(), "forNotifreceiver made the intent");
+            Log.d(this.getClass().getName(), "forNotifreceiver made the intent");
             RSSTheConvNotif.startService(context);
         }
         else
@@ -39,7 +38,5 @@ public class createNotifReceiver extends BroadcastReceiver {
 
             am.cancel(pendingIntentToCancel);
         }
-
-
     }
 }

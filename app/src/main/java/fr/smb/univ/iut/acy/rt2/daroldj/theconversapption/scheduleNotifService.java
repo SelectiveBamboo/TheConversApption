@@ -20,7 +20,6 @@ public class scheduleNotifService extends JobIntentService {
 
     public static void startService(Context context)
     {
-        Log.e(TAG, "schedule notif service");
         enqueueWork(context, scheduleNotifService.class, 1, new Intent());
     }
 
@@ -59,14 +58,13 @@ public class scheduleNotifService extends JobIntentService {
         PendingIntent alarmIntent= PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //getting instance of AlarmManager service
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        //Inexact alarm everyday since device is booted up. This is a better choice and
-        //scales well when device time settings/locale is changed
-        //We're setting alarm to fire notification after 15 minutes, and every 15 minutes there on
-        assert alarmManager != null;
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                cal_alarm.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, alarmIntent);
 
-       // Toast.makeText(context, "Next notif at: " + cal_now.get(Calendar.HOUR) + ":" + cal_now.get(Calendar.MINUTE), Toast.LENGTH_LONG).show();
+
+        if (alarmManager != null)
+        {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                    cal_alarm.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY, alarmIntent);
+        }
     }
 }

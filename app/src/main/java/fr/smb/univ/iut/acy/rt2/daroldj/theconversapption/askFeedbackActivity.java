@@ -67,8 +67,6 @@ public class askFeedbackActivity extends AppCompatActivity {
 
     public void sendFeedback(View view)
     {
-        Log.d(TAG, "sendFeedack");
-
         if (this.feedback.getText().length() > 1)
         {
             //for whether the user exit the activity, he could come back and have his text again (planned)

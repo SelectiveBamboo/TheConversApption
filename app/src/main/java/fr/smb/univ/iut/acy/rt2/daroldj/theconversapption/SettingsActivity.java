@@ -24,8 +24,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         toolbarInit();
 
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.settings, new SettingsFragment())
@@ -40,13 +38,16 @@ public class SettingsActivity extends AppCompatActivity {
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
         // Enable the Up button
-        ab.setDisplayShowHomeEnabled(true);
-        ab.setDisplayHomeAsUpEnabled(true);
+        if (ab != null)
+        {
+            ab.setDisplayShowHomeEnabled(true);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
-        // Check if the key event was the Back button and if there's history
+        // Check if the key event was the Back button
         if ((keyCode == KeyEvent.KEYCODE_BACK))
         {
             Intent intent = new Intent(context, MainActivity.class);

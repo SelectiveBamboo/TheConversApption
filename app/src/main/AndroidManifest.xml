@@ -23,9 +23,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
-                 <data
-                 android:host="theconversationfrance.cmail19.com"
-                 android:scheme="https" />
+                <data
+                    android:host="theconversationfrance.cmail19.com"
+                    android:scheme="https" />
+                <data
+                    android:host="theconversation.com"
+                    android:scheme="https" />
 
 
                  <category android:name="android.intent.category.DEFAULT" />

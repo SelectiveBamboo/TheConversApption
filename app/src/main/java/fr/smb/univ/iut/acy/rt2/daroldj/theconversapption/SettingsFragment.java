@@ -70,27 +70,30 @@ public class SettingsFragment extends PreferenceFragmentCompat implements TimePi
                 public boolean onPreferenceClick(Preference preference)
                 {
                     boolean isNotifEnabled = sharedPrefs.getBoolean("switch_allow_notif", true);
-                    Log.d(this.getClass().getName(), "isNotifEnabled in settings Fragment: " + isNotifEnabled);
+                    Log.d(this.getClass().getName(), "isNotifEnabled : " + isNotifEnabled);
 
                     if (!isNotifEnabled)
                     {
-                        Toast.makeText(context, "notifications disabled", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "notifications disabled", Toast.LENGTH_SHORT).show();
 
-                        //cancel the next scheduled notifications
+                        //cancel the next scheduled notification
                         Intent intentToCancel = new Intent(context, createNotifReceiver.class);
                         PendingIntent pendingIntentToCancel = PendingIntent.getBroadcast(context, 0, intentToCancel, PendingIntent.FLAG_UPDATE_CURRENT);
 
                         AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-                        am.cancel(pendingIntentToCancel);
+                        if (am != null)
+                        {
+                            am.cancel(pendingIntentToCancel);
+                        }
                         pendingIntentToCancel.cancel();
                     }
                     else if (isNotifEnabled)
                     {
-                        Toast.makeText(context, "notifications enabled", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "notifications enabled", Toast.LENGTH_SHORT).show();
 
                         Intent scheduleNotifIntent = new Intent(getContext(), scheduleNotifService.class);
-                        getActivity().startService(scheduleNotifIntent);
+                        Objects.requireNonNull(getActivity()).startService(scheduleNotifIntent);
                     }
 
                     return true;
@@ -121,7 +124,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements TimePi
 
         sharedPrefs.edit().putString("set_time_notification", time).apply();
 
-        Intent scheduleNotifIntent = new Intent(getContext(), scheduleNotifService.class);
         scheduleNotifService.startService(context);
 
         Toast.makeText(getContext(), "Notif : " + time, Toast.LENGTH_LONG).show();
