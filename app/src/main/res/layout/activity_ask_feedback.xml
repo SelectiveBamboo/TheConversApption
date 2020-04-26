@@ -15,12 +15,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="64dp"
         android:layout_marginEnd="16dp"
-        android:hint="Enter your feedback\nLooking for your best ideas !"
+        android:hint="@string/HintFeedback"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/sendFeedback"
@@ -28,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:onClick="sendFeedback"
-        android:text="Send feedback"
+        android:text="@string/button_sendFeedback"
         app:layout_constraintRight_toRightOf="@id/editFeedback"
         app:layout_constraintTop_toBottomOf="@id/editFeedback"/>
 

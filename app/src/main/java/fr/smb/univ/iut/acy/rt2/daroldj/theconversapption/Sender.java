@@ -22,8 +22,6 @@ public class Sender extends Thread {
 
     public Sender(Activity activity, String ip, String message)
     {
-        Log.d(TAG, "constructor");
-
         this.activity = activity;
         this.ip = ip;
         this.message = message;
@@ -87,7 +85,7 @@ public class Sender extends Thread {
             public void run()
             {
                 Log.v(TAG,"feedback sent");
-                Toast.makeText(Sender.this.activity,"Feedback sent.", Toast.LENGTH_LONG).show();
+                Toast.makeText(Sender.this.activity, "Sent.", Toast.LENGTH_LONG).show();
 
             }
         });

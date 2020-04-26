@@ -61,7 +61,7 @@ public class TheConversationXmlParser {
 
                 if (UTCDateLimit != null && publishedInstant.isBefore(UTCDateLimit))
                 {
-                    Log.d(TheConversationXmlParser.class.getName(),"isOutdated = true" );
+                    Log.d(TheConversationXmlParser.class.getName(),"isOutdated set to TRUE" );
 
                     isOutdated = true;
                 }

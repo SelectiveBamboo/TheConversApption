@@ -62,7 +62,7 @@ public class ReadingArticleActivity extends AppCompatActivity {
                 final File archiveFile = new File(context.getFilesDir(), nameOfArchivedFile);
                 webView.saveWebArchive(archiveFile.getAbsolutePath());
 
-                Snackbar.make(view, "Stop annoying the Panic Button, it's just a virus bro. Internet will still be.", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, R.string.snackbar_Text_ReadingArticle, Snackbar.LENGTH_LONG)
                         .setAction("Open file", new View.OnClickListener() {
                             @Override
                             public void onClick(View v)
@@ -83,7 +83,7 @@ public class ReadingArticleActivity extends AppCompatActivity {
     {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarReadingArticle);
         setSupportActionBar(toolbar);
-        setTitle("");
+        setTitle( getString(R.string.title_activity_reading_article));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -191,10 +191,10 @@ public class ReadingArticleActivity extends AppCompatActivity {
         Intent sendIntent = new Intent();
 
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "Have a look at this, great articles deserve great audience ! :) \n\n" +  webView.getUrl());
+        sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.message_Sharing_Article) +  webView.getUrl());
         sendIntent.setType("text/plain");
 
-        Intent shareIntent = Intent.createChooser(sendIntent, "To choose how you share");
+        Intent shareIntent = Intent.createChooser(sendIntent, getString(R.string.hint_Chooser_SharingLink));
         startActivity(shareIntent);
     }
 

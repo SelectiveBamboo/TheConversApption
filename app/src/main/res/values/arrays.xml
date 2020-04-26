@@ -221,4 +221,17 @@
     <string-array name="settings_multi_select_list_URL_Values_CategoryToFollow_NL">
         <item>https://theconversation.com/nz/articles.atom</item>
     </string-array>
+    <string-array name="regionCode_Feeds">
+        <item>US</item>
+        <item>FR</item>
+        <item>AU</item>
+        <item>AF</item>
+        <item>UK</item>
+        <item>GP</item>
+        <item>CA_en</item>
+        <item>ID</item>
+        <item>ES</item>
+        <item>CA_fr</item>
+        <item>NL</item>
+    </string-array>
 </resources>

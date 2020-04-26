@@ -33,7 +33,7 @@ public class scheduleNotifService extends JobIntentService {
     private void scheduleServiceAlarm(Context context)
     {
         String timeNotif = sharedPrefs.getString("set_time_notification", "19:00");
-        Log.println(Log.DEBUG, TAG,"ScheduleNotifService started, timeNotif : " + timeNotif);
+        Log.d(TAG,"ScheduleNotifService started, timeNotif : " + timeNotif);
 
         String[] splittedTimeNotif = timeNotif.split(":");
 

@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     final static String REGEX_URL_NOT_ARTICLE_THECONV = "theconversation.com/((fr)|(us)|(ca)|(global)|(africa)|(ca-fr)|(id)|(es)|(nz)|(uk)|(au)/?)";
     Pattern patternArticleUrl = Pattern.compile(REGEX_URL_NOT_ARTICLE_THECONV);
 
-
     SharedPreferences sharedPrefs;
 
     @Override
@@ -56,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMain);
+        toolbar.setTitle( getString(R.string.toolbarTitle) );
         setSupportActionBar(toolbar);
 
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

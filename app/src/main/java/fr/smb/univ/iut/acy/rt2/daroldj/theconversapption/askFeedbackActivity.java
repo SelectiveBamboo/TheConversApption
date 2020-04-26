@@ -72,19 +72,20 @@ public class askFeedbackActivity extends AppCompatActivity {
             //for whether the user exit the activity, he could come back and have his text again (planned)
             SharedPreferences.Editor editor = this.sharedPreferences.edit();
             editor.putString("feedback", this.feedback.getText().toString());
-            editor.commit();
+            editor.apply();
 
             this.sendFeedbackToServer(this.feedback.getText().toString());
         }
         else
         {
-            this.feedback.setError("Message too short");
+            this.feedback.setError(getString(R.string.message_Too_Short));
         }
     }
 
     private void sendFeedbackToServer(String feedbackToSend)
     {
-        new Sender(this, "192.168.1.65", feedbackToSend);
+         //-----------TODO --- Make an IP address usable for feedbacks
+        new Sender(this, getString(R.string.ipAddress), feedbackToSend);
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event)

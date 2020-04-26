@@ -24,7 +24,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements TimePi
 
     private Preference timeNotifPref;
     private SwitchPreferenceCompat allowNotifPref;
-    private MultiSelectListPreference UsFeedSelections;
 
     private SharedPreferences sharedPrefs;
 
@@ -45,7 +44,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements TimePi
     {
         timeNotifPref = findPreference("set_time_notification");
         allowNotifPref = findPreference("switch_allow_notif");
-        UsFeedSelections = findPreference("multiselect_US_feeds");
     }
 
     private void configListener()
@@ -90,7 +88,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements TimePi
                     }
                     else if (isNotifEnabled)
                     {
-                        Toast.makeText(context, "notifications enabled", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, getString(R.string.message_Notification_Enabled), Toast.LENGTH_SHORT).show();
 
                         Intent scheduleNotifIntent = new Intent(getContext(), scheduleNotifService.class);
                         Objects.requireNonNull(getActivity()).startService(scheduleNotifIntent);
@@ -126,7 +124,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements TimePi
 
         scheduleNotifService.startService(context);
 
-        Toast.makeText(getContext(), "Notif : " + time, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), getString(R.string.message_TimeNotif) + time, Toast.LENGTH_LONG).show();
         // if you use setOnPreferenceChangeListener on it, use setTime.callChangeListener(time);
     }
 }

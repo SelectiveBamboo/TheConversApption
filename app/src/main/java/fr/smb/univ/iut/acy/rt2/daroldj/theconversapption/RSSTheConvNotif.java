@@ -48,8 +48,6 @@ public class RSSTheConvNotif extends JobIntentService {
 
     private final static String TAG = RSSTheConvNotif.class.getName();
 
-    private static final String ACTION_NOTIF = "Action.notif";
-
     Context context = this;
 
     private SharedPreferences sharedPref;
@@ -73,7 +71,7 @@ public class RSSTheConvNotif extends JobIntentService {
 
         Set<String> rssLinks = new HashSet<>();
 
-        String[] regionFeeds = {"US", "FR", "AU", "AF", "UK", "GP", "CA_en", "ID", "ES", "CA_fr", "NL"};
+        String[] regionFeeds = getResources().getStringArray(R.array.regionCode_Feeds);
 
         for (String region : regionFeeds)
         {
@@ -141,8 +139,9 @@ public class RSSTheConvNotif extends JobIntentService {
 
                             n++;
 
-                            Log.v(TAG, "Notification sent.");
+
                         }
+                        Log.v(TAG, "Notification sent");
                     }
                     catch (FileNotFoundException e) { Log.e(TAG, "error FileNotFoundException : " + e.getMessage()); }
                     catch (IOException e) { Log.e(TAG, "error IOException : " + e.getMessage()); }

@@ -25,12 +25,12 @@
                 android:key="multiselect_US_feeds"
                 android:title="US feeds to follow" />
 
-            <MultiSelectListPreference
-                android:dialogTitle="Sélectionner les catégories à suivre"
-                android:entries="@array/settings_multi_select_list_CategoryToFollow_FR"
-                android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_FR"
-                android:key="multiselect_FR_feeds"
-                android:title="feeds FR à suivre" />
+        <MultiSelectListPreference
+            android:dialogTitle="Sélectionner les catégories à suivre"
+            android:entries="@array/settings_multi_select_list_CategoryToFollow_FR"
+            android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_FR"
+            android:key="multiselect_FR_feeds"
+            android:title="Feeds FR à suivre" />
 
             <MultiSelectListPreference
                 android:dialogTitle="Select categories you want to follow"
@@ -82,12 +82,12 @@
                 android:key="multiselect_ES_feeds"
                 android:title="España feeds para seguir"/>
 
-            <MultiSelectListPreference
-                android:dialogTitle="Select categories you want to follow"
-                android:entries="@array/settings_multi_select_list_CategoryToFollow_CA_fr"
-                android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_CA_fr"
-                android:key="multiselect_CA_fr_feeds"
-                android:title="feeds du Canada (français) à suivre"/>
+        <MultiSelectListPreference
+            android:dialogTitle="Select categories you want to follow"
+            android:entries="@array/settings_multi_select_list_CategoryToFollow_CA_fr"
+            android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_CA_fr"
+            android:key="multiselect_CA_fr_feeds"
+            android:title="Feeds du Canada (français) à suivre" />
 
             <MultiSelectListPreference
                 android:dialogTitle="Select categories you want to follow"
