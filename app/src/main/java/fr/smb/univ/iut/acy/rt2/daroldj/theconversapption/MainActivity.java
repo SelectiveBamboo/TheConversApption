@@ -19,7 +19,14 @@ import android.webkit.WebViewClient;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
+
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.Calendar;
 import java.util.Objects;
@@ -34,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Context context = this;
 
-    private String url = "https://theconversation.com/fr";
-    final static String REGEX_URL_NOT_ARTICLE_THECONV = "theconversation.com/((fr/)|(us/)|(ca/)|(global/)|(africa/)|(ca-fr/)|(id/)|(es/)|(nz/)|(uk/)|(au/))";
+    private String url = "https://theconversation.com/";
+    final static String REGEX_URL_NOT_ARTICLE_THECONV = "theconversation.com/((fr)|(us)|(ca)|(global)|(africa)|(ca-fr)|(id)|(es)|(nz)|(uk)|(au)/?)";
     Pattern patternArticleUrl = Pattern.compile(REGEX_URL_NOT_ARTICLE_THECONV);
 
 
@@ -106,11 +113,11 @@ public class MainActivity extends AppCompatActivity {
                                      public boolean shouldOverrideUrlLoading(WebView view, String urlNewString)
                                      {
                                          Matcher matcher = patternArticleUrl.matcher(urlNewString);
-                                         if(!matcher.find())
+                                         if(!matcher.find() && !urlNewString.equals("https://theconversation.com/"))
                                          {
-                                             Intent i = new Intent(context, ReadingArticleActivity.class);
-                                             i.putExtra("articleUrl", urlNewString);
-                                             context.startActivity(i);
+                                             Intent intent_ReadingArticle = new Intent(context, ReadingArticleActivity.class);
+                                             intent_ReadingArticle.putExtra("articleUrl", urlNewString);
+                                             context.startActivity(intent_ReadingArticle);
                                              return true;
                                          }
 
