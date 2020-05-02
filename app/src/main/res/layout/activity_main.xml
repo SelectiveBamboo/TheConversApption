@@ -10,11 +10,17 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarMain"
         android:layout_width="match_parent"
-        android:layout_height="28dp"
+        android:layout_height="33dp"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/settingsFragment"
+        android:name="fr.smb.univ.iut.acy.rt2.daroldj.theconversapption.SettingsFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <WebView
         android:id="@+id/webviewMain"
@@ -24,15 +30,6 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="-3dp"
         android:layout_marginEnd="0dp">
-
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/settingsFragment"
-            android:name="fr.smb.univ.iut.acy.rt2.daroldj.theconversapption.SettingsFragment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_x="400dp"
-            android:layout_y="10dp" />
-
     </WebView>
 
 </RelativeLayout>

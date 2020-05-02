@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="fr.smb.univ.iut.acy.rt2.daroldj.theconversapption.ViewingProfileActivity">
+
+    <item android:id="@+id/icon_refresh"
+        android:icon="@drawable/ic_autorenew_black_24dp"
+        android:title="refresh"
+        android:onClick="refresh"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/icon_share"
+        android:icon="@drawable/ic_share_black_24dp"
+        android:title="share"
+        android:onClick="shareLink"
+        app:showAsAction="ifRoom"/>
+
+    <item android:title="Settings"
+        android:onClick="openSettings"
+        app:showAsAction="never"/>
+
+    <item android:title="Feedback"
+        android:onClick="askFeedback"
+        app:showAsAction="never"/>
+
+</menu>

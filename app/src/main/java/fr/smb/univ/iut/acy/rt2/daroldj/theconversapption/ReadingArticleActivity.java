@@ -2,7 +2,7 @@ package fr.smb.univ.iut.acy.rt2.daroldj.theconversapption;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -21,6 +21,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ReadingArticleActivity extends AppCompatActivity {
 
@@ -33,6 +36,12 @@ public class ReadingArticleActivity extends AppCompatActivity {
     private String TAG = this.getClass().getName();
 
     private String data;
+
+    final static String REGEX_URL_NOT_ARTICLE_THECONV = "theconversation.com/((fr)|(us)|(ca)|(global)|(africa)|(ca-fr)|(id)|(es)|(nz)|(uk)|(au)/?)";
+    final static String REGEX_URL_PROFILE = "theconversation.com/profiles/";
+    Pattern patternArticleUrl = Pattern.compile(REGEX_URL_NOT_ARTICLE_THECONV);
+    Pattern patternProfileUrl = Pattern.compile(REGEX_URL_PROFILE);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,9 +58,16 @@ public class ReadingArticleActivity extends AppCompatActivity {
         }
         else
         {
-            articleUrl = getIntent().getStringExtra("articleUrl");
+            articleUrl = getIntent().getStringExtra("url");
         }
 
+        setFloatingAB();
+
+        loadWebViewAndURL();
+    }
+
+    private void setFloatingAB()
+    {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.downloadArticle_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,8 +91,6 @@ public class ReadingArticleActivity extends AppCompatActivity {
                         .show();
             }
         });
-
-        loadWebViewAndURL();
     }
 
     private void setToolbar()
@@ -100,10 +114,6 @@ public class ReadingArticleActivity extends AppCompatActivity {
         webView = (WebView)findViewById(R.id.webviewArticle);
 
         webView.setWebViewClient(new WebViewClient() {
-            public void onPageStarted(WebView view, String url, Bitmap favicon)
-            {
-                super.onPageStarted(view, url, favicon);
-            }
             @Override
             public void onPageFinished(WebView view, String url)
             {
@@ -140,13 +150,44 @@ public class ReadingArticleActivity extends AppCompatActivity {
                         "})");
                 super.onPageFinished(view, url);
             }
+
+            public boolean shouldOverrideUrlLoading(WebView view, String urlNewString)
+            {
+                Matcher matcherProfile = patternProfileUrl.matcher(urlNewString);
+                Matcher matcherNotArticle = patternArticleUrl.matcher(urlNewString);
+
+                if(matcherProfile.find())
+                { //Whether it should be open as a profile page
+                    Intent intent_ViewingProfile = new Intent(context, ViewingProfileActivity.class);
+                    intent_ViewingProfile.putExtra("url", urlNewString);
+                    context.startActivity(intent_ViewingProfile);
+
+                    return true;
+                }
+
+                if(!matcherNotArticle.find() && !urlNewString.equals("https://theconversation.com/"))
+                {  //Whether it should be open as an article
+                    return false;
+                }
+
+                if (Objects.equals(Uri.parse(urlNewString).getHost(),"theconversation.com"))
+                {   //Whether it should be open in the main View
+                    Intent intent_MainActivity = new Intent(context, MainActivity.class);
+                    intent_MainActivity.putExtra("url", urlNewString);
+                    context.startActivity(intent_MainActivity);
+
+                    return true;
+                }
+                else
+                { return super.shouldOverrideUrlLoading(view, urlNewString); }
+            }
         });
 
         WebSettings webSettings = webView.getSettings();
 
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowContentAccess(true);
-        webSettings.setDisplayZoomControls(true);
+        webSettings.setSupportZoom(true);
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
         //for future dark mode availability

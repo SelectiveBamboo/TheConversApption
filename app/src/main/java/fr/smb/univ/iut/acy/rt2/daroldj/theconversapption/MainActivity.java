@@ -19,16 +19,8 @@ import android.webkit.WebViewClient;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
 
-import com.google.android.material.navigation.NavigationView;
-
-import java.util.Calendar;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     private String url = "https://theconversation.com/";
     final static String REGEX_URL_NOT_ARTICLE_THECONV = "theconversation.com/((fr)|(us)|(ca)|(global)|(africa)|(ca-fr)|(id)|(es)|(nz)|(uk)|(au)/?)";
+    final static String REGEX_URL_PROFILE = "theconversation.com/profiles/";
     Pattern patternArticleUrl = Pattern.compile(REGEX_URL_NOT_ARTICLE_THECONV);
+    Pattern patternProfileUrl = Pattern.compile(REGEX_URL_PROFILE);
 
     SharedPreferences sharedPrefs;
 
@@ -56,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarMain);
         toolbar.setTitle( getString(R.string.toolbarTitle) );
+        toolbar.collapseActionView();
         setSupportActionBar(toolbar);
 
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -66,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
         if (isNotifEnabled)
         {
             scheduleNotifService.startService(context);
+        }
+
+        if (getIntent().getStringExtra("url") != null)
+        {
+            url = getIntent().getStringExtra("url");
         }
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
@@ -112,12 +112,24 @@ public class MainActivity extends AppCompatActivity {
                                      @Override
                                      public boolean shouldOverrideUrlLoading(WebView view, String urlNewString)
                                      {
-                                         Matcher matcher = patternArticleUrl.matcher(urlNewString);
-                                         if(!matcher.find() && !urlNewString.equals("https://theconversation.com/"))
-                                         {
+                                         Matcher matcherProfile = patternProfileUrl.matcher(urlNewString);
+                                         Matcher matcherNotArticle = patternArticleUrl.matcher(urlNewString);
+
+                                         if(matcherProfile.find())
+                                         { //Whether it should be open as a profile page
+                                             Intent intent_ViewingProfile = new Intent(context, ViewingProfileActivity.class);
+                                             intent_ViewingProfile.putExtra("url", urlNewString);
+                                             context.startActivity(intent_ViewingProfile);
+
+                                             return true;
+                                         }
+
+                                         if(!matcherNotArticle.find() && !urlNewString.equals("https://theconversation.com/"))
+                                         {  //Actually used t determine whether it should open it as an article or not
                                              Intent intent_ReadingArticle = new Intent(context, ReadingArticleActivity.class);
-                                             intent_ReadingArticle.putExtra("articleUrl", urlNewString);
+                                             intent_ReadingArticle.putExtra("url", urlNewString);
                                              context.startActivity(intent_ReadingArticle);
+
                                              return true;
                                          }
 
@@ -132,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
 
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowContentAccess(true);
-        webSettings.setDisplayZoomControls(true);
 
         //for future dark mode availability
 
@@ -140,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
 //        {
 //            webSettings.setForceDark(WebSettings.FORCE_DARK_ON);
 //        }
+
 
 
         webView.loadUrl(url);
