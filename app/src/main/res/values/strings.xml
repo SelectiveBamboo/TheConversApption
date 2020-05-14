@@ -112,7 +112,7 @@
     <string name="HintFeedback"> Enter your feedback.\n Looking for your best ideas !</string>
     <string name="button_sendFeedback">Send feedback</string>
     <string name="toolbarTitle"></string>
-    <string name="snackbar_Text_ReadingArticle">Stop annoying the Panic Button, it\'s just a virus bro. Internet will still be.</string>
+    <string name="snackbar_Text_ReadingArticle">This Panic button doesn\'t work. Now, Panic. </string>
     <string name="message_Sharing_Article">Have a look at this, great articles deserve great audience ! :) \n\n</string>
     <string name="hint_Chooser_SharingLink">To choose how you share</string>
     <string name="message_Too_Short">Message too short</string>

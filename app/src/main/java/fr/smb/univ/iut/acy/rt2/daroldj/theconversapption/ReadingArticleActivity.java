@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -21,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -117,37 +119,11 @@ public class ReadingArticleActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url)
             {
-                // A failed attempt to apply javascript code to a webpage using webView..
-                //But keeping hope so keeping it.
-
-                view.loadUrl("javascript:(function hideStuff(){\n" +
-                        "  var el = document.querySelector('#article');\n" +
-                        "  var node, nodes = [];\n" +
-                        "  \n" +
-                        "  do {\n" +
-                        "    var parent = el.parentNode;\n" +
-                        "    \n" +
-                        "    // Collect element children\n" +
-                        "    for (var i=0, iLen=parent.childNodes.length; i<iLen; i++) {\n" +
-                        "      node = parent.childNodes[i];\n" +
-                        "\n" +
-                        "      // Collect only sibling nodes that are elements and not the current element\n" +
-                        "      if (node.nodeType == 1 && node != el) {\n" +
-                        "        nodes.push(node);\n" +
-                        "      }\n" +
-                        "    }\n" +
-                        "\n" +
-                        "    // Go up to parent\n" +
-                        "    el = parent;\n" +
-                        "\n" +
-                        "  // Stop when processed the body's child nodes\n" +
-                        "  } while (el.tagName.toLowerCase() != 'body');\n" +
-                        "\n" +
-                        "  // Hide the collected nodes\n" +
-                        "  nodes.forEach(function(node){\n" +
-                        "    node.style.display = 'none';\n" +
-                        "  });\n" +
-                        "})");
+                view.evaluateJavascript("var el = document.querySelector('[itemprop=articleBody]'); " +
+                        "var node, nodes = []; do { var parent = el.parentNode; for (var i=0, iLen=parent.childNodes.length; i<iLen; i++) " +
+                        "{ node = parent.childNodes[i]; if (node.nodeType == 1 && node != el) { nodes.push(node); } } el = parent; } " +
+                      "while (el.tagName.toLowerCase() != 'body'); nodes.forEach(function(node){ node.style.display = 'none'; });", null);
+                ;
                 super.onPageFinished(view, url);
             }
 
@@ -183,12 +159,15 @@ public class ReadingArticleActivity extends AppCompatActivity {
             }
         });
 
+        webView.setWebChromeClient(new WebChromeClient());
+
         WebSettings webSettings = webView.getSettings();
 
         webSettings.setJavaScriptEnabled(true);
         webSettings.setAllowContentAccess(true);
-        webSettings.setSupportZoom(true);
-        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        webSettings.setDomStorageEnabled(true);
+
+        //webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
         //for future dark mode availability
 
@@ -196,7 +175,7 @@ public class ReadingArticleActivity extends AppCompatActivity {
 //        {
 //            webSettings.setForceDark(WebSettings.FORCE_DARK_ON);
 //        }
-
+        WebView.setWebContentsDebuggingEnabled(false);
         webView.loadUrl(articleUrl);
     }
 
