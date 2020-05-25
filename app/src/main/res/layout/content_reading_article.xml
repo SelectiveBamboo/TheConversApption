@@ -8,11 +8,10 @@
     tools:context=".ReadingArticleActivity"
     tools:showIn="@layout/activity_reading_article">
 
-    <WebView
-        android:id="@+id/webviewArticle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="@string/large_text" />
+        <WebView
+            android:id="@+id/webviewArticle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"/>
 
 </androidx.core.widget.NestedScrollView>

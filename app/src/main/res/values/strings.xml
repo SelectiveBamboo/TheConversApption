@@ -124,4 +124,5 @@
     <string name="viewingProfile_barTitle">Profile</string>
     <string name="noUrlData">No url data provided</string>
     <string name="message_Sharing_Profile">Worth a look !\n\n</string>
+    <string name="hint_Chooser_OpenLinkElsewhere">Open in...</string>
 </resources>

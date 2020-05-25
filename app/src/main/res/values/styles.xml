@@ -8,6 +8,11 @@
         <item name="colorAccent">#D8352A</item>
     </style>
 
+    <style name="TextAppearance.ExpandedTitle"
+        parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">21sp</item>
+    </style>
+
     <style name="dateTimePicker" parent="ThemeOverlay.AppCompat.Dialog">
         <item name="colorAccent">#282828</item>
     </style>
