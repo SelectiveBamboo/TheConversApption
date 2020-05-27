@@ -213,7 +213,7 @@ public class RSSTheConvNotif extends JobIntentService {
         catch (FileNotFoundException fnfe) {fileFetchedXml = null;}
         catch (IOException ioe) {fileFetchedXml = null;}
 
-        return fileFetchedXml;      //can return a null object !
+        return fileFetchedXml;
     }
 
     public boolean isWebsiteReachable(String websiteURL)

@@ -25,7 +25,13 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -142,13 +148,10 @@ public class ReadingArticleActivity extends AppCompatActivity {
             @Override
             public void onLoadResource(WebView view, String url)
             {
-                view.evaluateJavascript("var el = document.querySelector('[itemprop=articleBody]'); " +
-                        "var node, nodes = []; " +
-                        "do { var parent = el.parentNode; " +
-                        "for (var i=0, iLen=parent.childNodes.length; i<iLen; i++) { node = parent.childNodes[i]; " +
-                        "if (node.nodeType == 1 && node != el) { nodes.push(node); } } " +
-                        "el = parent; } while (el.tagName.toLowerCase() != 'body'); " +
-                        "nodes.forEach(function(node){ node.style.display = 'none'; });", null);
+                view.evaluateJavascript("document.getElementById('topbar').style.display = 'none';" +
+                        "document.getElementById('header').style.display = 'none';" +
+                        "document.getElementById('small-sidebar-open-button').style.display = 'none';" +
+                        "document.getElementsByClassName('content-header')[0].style.display = 'none';", null);
 
                 super.onLoadResource(view, url);
             }
@@ -163,7 +166,6 @@ public class ReadingArticleActivity extends AppCompatActivity {
 
                     view.setVisibility(View.VISIBLE);
                    // ReadingArticleActivity.this.getSupportActionBar().setTitle(view.getTitle());
-                    ReadingArticleActivity.this.setTitle(view.getTitle());
                     //((TextView) findViewById(R.id.appbar_title)).setText(view.getTitle());
                 }
 
@@ -207,7 +209,14 @@ public class ReadingArticleActivity extends AppCompatActivity {
             }
         });
 
-        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onReceivedTitle(WebView view, String title)
+            {
+                ReadingArticleActivity.this.setTitle(title);
+                super.onReceivedTitle(view, title);
+            }
+        });
 
         WebSettings webSettings = webView.getSettings();
 
@@ -293,5 +302,21 @@ public class ReadingArticleActivity extends AppCompatActivity {
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    public void getImageLink(URL url) {
+        try {
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    urlConnection.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+
+            }
+            urlConnection.disconnect();
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

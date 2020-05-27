@@ -32,7 +32,7 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:expandedTitleTextAppearance="@style/TextAppearance.ExpandedTitle"
                 app:titleEnabled="true"
-                app:maxLines="6">
+                app:maxLines="5">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbarReadingArticle"
