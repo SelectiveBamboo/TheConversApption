@@ -13,7 +13,10 @@
         android:layout_height="84dp"
         android:layout_centerInParent="true" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout android:layout_height="match_parent" android:layout_width="match_parent">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout_ReadingArticle"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
@@ -39,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     app:layout_collapseMode="pin"
-                    app:layout_scrollFlags="scroll|enterAlways|snap"
+                    app:layout_scrollFlags="scroll|enterAlways"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
             </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -43,6 +44,7 @@ public class ReadingArticleActivity extends AppCompatActivity {
     private WebView webView;
 
     private ProgressBar loadProgress;
+    private CoordinatorLayout coordLayout;
 
     private Context context = this;
 
@@ -65,6 +67,8 @@ public class ReadingArticleActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reading_article);
+
+        coordLayout = findViewById(R.id.coordinatorLayout_ReadingArticle);
 
         setBar();
 
@@ -118,15 +122,10 @@ public class ReadingArticleActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
 
-       // ActionBar actionBar = getSupportActionBar();
-       // actionBar.setDisplayShowCustomEnabled(true);
-        //actionBar.setCustomView(R.layout.appbar_title_layout);
-
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
-            { finish(); }
+            { onBackPressed(); }
         });
     }
 
@@ -148,7 +147,8 @@ public class ReadingArticleActivity extends AppCompatActivity {
             @Override
             public void onLoadResource(WebView view, String url)
             {
-                view.evaluateJavascript("document.getElementById('topbar').style.display = 'none';" +
+                view.evaluateJavascript("document.getElementsByClassName('reader-signin')[0].style.display = 'none';" +
+                        "document.getElementById('topbar').style.display = 'none';" +
                         "document.getElementById('header').style.display = 'none';" +
                         "document.getElementById('small-sidebar-open-button').style.display = 'none';" +
                         "document.getElementsByClassName('content-header')[0].style.display = 'none';", null);

@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -77,6 +78,18 @@ public class MainActivity extends AppCompatActivity {
         {
             loadWebViewAndURL(context);
         }
+
+        final SwipeRefreshLayout swipeToRefreshLay = findViewById(R.id.mainActivtiy_swiperefresh);
+        swipeToRefreshLay.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        webView.reload();
+                        swipeToRefreshLay.setRefreshing(false);
+                    }
+                }
+        );
+
     }
 
     @Override
@@ -109,6 +122,14 @@ public class MainActivity extends AppCompatActivity {
     {
         webView = (WebView)findViewById(R.id.webviewMain);
         webView.setWebViewClient(new WebViewClient() {
+
+                                    @Override
+                                    public void onLoadResource(WebView view, String url)
+                                    {
+                                        view.evaluateJavascript("document.getElementsByClassName('reader-signin')[0].style.display = 'none';", null);
+
+                                        super.onLoadResource(view, url);
+                                    }
                                      @Override
                                      public boolean shouldOverrideUrlLoading(WebView view, String urlNewString)
                                      {
@@ -137,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                                          { return false; }
                                          else
                                          { return super.shouldOverrideUrlLoading(view, urlNewString); }
+
                                      }
                                  });
         
@@ -155,11 +177,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         webView.loadUrl(url);
-    }
-
-    public void onRefresh() //for future swipe-to-refresh
-    {
-        webView.reload();
     }
 
     public void refresh(MenuItem item)
