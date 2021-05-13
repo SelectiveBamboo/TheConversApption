@@ -22,79 +22,91 @@
                 android:dialogTitle="Select categories you want to follow"
                 android:entries="@array/settings_multi_select_list_CategoryToFollow_US"
                 android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_US"
+                app:allowDividerBelow="true"
+                app:summary="Categories to watch for notification "
                 android:key="multiselect_US_feeds"
-                android:title="US feeds to follow" />
+                android:title="US feeds" />
 
         <MultiSelectListPreference
             android:dialogTitle="Sélectionner les catégories à suivre"
             android:entries="@array/settings_multi_select_list_CategoryToFollow_FR"
             android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_FR"
+            app:summary="Categories to watch for notification "
             android:key="multiselect_FR_feeds"
-            android:title="Feeds FR à suivre" />
+            android:title="French Feeds" />
 
             <MultiSelectListPreference
                 android:dialogTitle="Select categories you want to follow"
                 android:entries="@array/settings_multi_select_list_CategoryToFollow_AU"
                 android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_AU"
+                app:summary="Categories to watch for notification "
                 android:key="multiselect_AU_feeds"
-                android:title="Australia feeds to follow" />
+                android:title="Australian Feeds" />
 
             <MultiSelectListPreference
                 android:dialogTitle="Select categories you want to follow"
                 android:entries="@array/settings_multi_select_list_CategoryToFollow_AF"
                 android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_AF"
+                app:summary="Categories to watch for notification "
                 android:key="multiselect_AF_feeds"
-                android:title="Africa feeds to follow" />
+                android:title="African Feeds" />
 
             <MultiSelectListPreference
                 android:dialogTitle="Select categories you want to follow"
                 android:entries="@array/settings_multi_select_list_CategoryToFollow_UK"
                 android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_UK"
+                app:summary="Categories to watch for notification "
                 android:key="multiselect_UK_feeds"
-                android:title="UK feeds to follow" />
+                android:title="UK feeds" />
 
             <MultiSelectListPreference
                 android:dialogTitle="Select categories you want to follow"
                 android:entries="@array/settings_multi_select_list_CategoryToFollow_GP"
                 android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_GP"
+                app:summary="Categories to watch for notification "
                 android:key="multiselect_GP_feeds"
-                android:title="Global Perspective feeds to follow"/>
+                android:title="Global-Perspective Feeds"/>
 
 
             <MultiSelectListPreference
                 android:dialogTitle="Select categories you want to follow"
                 android:entries="@array/settings_multi_select_list_CategoryToFollow_CA_en"
                 android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_CA_en"
+                app:summary="Categories to watch for notification "
                 android:key="multiselect_CA_en_feeds"
-                android:title="Canada (english) feeds to follow"/>
+                android:title="Canadian Feeds (english) "/>
 
             <MultiSelectListPreference
                 android:dialogTitle="Select categories you want to follow"
                 android:entries="@array/settings_multi_select_list_CategoryToFollow_ID"
                 android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_ID"
+                app:summary="Categories to watch for notification "
                 android:key="multiselect_ID_feeds"
-                android:title="Indonesia feeds to follow"/>
+                android:title="Indonesian Feeds"/>
 
             <MultiSelectListPreference
                 android:dialogTitle="Select categories you want to follow"
                 android:entries="@array/settings_multi_select_list_CategoryToFollow_ES"
                 android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_ES"
+                app:summary="Categories to watch for notification "
                 android:key="multiselect_ES_feeds"
-                android:title="España feeds para seguir"/>
+                android:title="España Feeds"/>
 
         <MultiSelectListPreference
             android:dialogTitle="Select categories you want to follow"
             android:entries="@array/settings_multi_select_list_CategoryToFollow_CA_fr"
             android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_CA_fr"
+            app:summary="Categories to watch for notification "
             android:key="multiselect_CA_fr_feeds"
-            android:title="Feeds du Canada (français) à suivre" />
+            android:title="Feeds Canadiens (français)" />
 
             <MultiSelectListPreference
                 android:dialogTitle="Select categories you want to follow"
                 android:entries="@array/settings_multi_select_list_CategoryToFollow_NL"
                 android:entryValues="@array/settings_multi_select_list_URL_Values_CategoryToFollow_NL"
+                app:summary="Categories to watch for notification "
                 android:key="multiselect_NL_feeds"
-                android:title="New Zealand feeds to follow"/>
+                android:title="New Zealand feeds"/>
         </PreferenceCategory>
 
 </PreferenceScreen>

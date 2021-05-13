@@ -119,9 +119,9 @@ public class ReadingArticleActivity extends AppCompatActivity {
     private void setBar()
     {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarReadingArticle);
+
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
