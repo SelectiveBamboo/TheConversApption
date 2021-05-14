@@ -2,6 +2,7 @@ package fr.smb.univ.iut.acy.rt2.daroldj.theconversapption;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +36,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,6 +66,7 @@ public class ReadingArticleActivity extends AppCompatActivity {
     final static String REGEX_URL_PROFILE = "theconversation.com/profiles/";
     Pattern patternNotArticleUrlInTheConv = Pattern.compile(REGEX_URL_NOT_ARTICLE_THECONV);
     Pattern patternProfileUrl = Pattern.compile(REGEX_URL_PROFILE);
+    Pattern patterSavedArticle = Pattern.compile(".mht");
 
 
     @Override
@@ -96,24 +103,64 @@ public class ReadingArticleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                final String nameOfArchivedFile = webView.getUrl().substring(28);
+                final String nameOfArchivedFile = webView.getUrl().substring(28) + ".mht";
+
+                ReadingArticleActivity.this.getTitle();
 
                 final File archiveFile = new File(context.getFilesDir(), nameOfArchivedFile);
                 webView.saveWebArchive(archiveFile.getAbsolutePath());
 
+                Map<String,String> savedArticlesMap = loadMap();
+                savedArticlesMap.put(archiveFile.toURI().toString(), getTitle().toString());
+
+                saveMap(savedArticlesMap);
+
                 Snackbar.make(view, R.string.snackbar_Text_ReadingArticle, Snackbar.LENGTH_LONG)
-                        .setAction("Open file", new View.OnClickListener() {
+                        .setAction("See it !", new View.OnClickListener() {
                             @Override
                             public void onClick(View v)
                             {
-                                webView.loadUrl(
-                                        String.valueOf(archiveFile.toURI())
-                                );
+                                Intent move = new Intent(getApplicationContext(), SavedArticlesActivity.class);
+                                view.getContext().startActivity(move);
+//                                webView.loadUrl(
+//                                        String.valueOf(archiveFile.toURI())
+//                                );
                             }
                         })
                         .show();
             }
         });
+    }
+
+    private void saveMap(Map<String,String> inputMap){
+        SharedPreferences pSharedPref = getApplicationContext().getSharedPreferences("SavedArticles", Context.MODE_PRIVATE);
+        if (pSharedPref != null){
+            JSONObject jsonObject = new JSONObject(inputMap);
+            String jsonString = jsonObject.toString();
+            SharedPreferences.Editor editor = pSharedPref.edit();
+            editor.putString("SavedArticles", jsonString);
+            editor.commit();
+        }
+    }
+
+    private Map<String,String> loadMap(){
+        Map<String,String> outputMap = new HashMap<String,String>();
+        SharedPreferences pSharedPref = getApplicationContext().getSharedPreferences("SavedArticles", Context.MODE_PRIVATE);
+        try{
+            if (pSharedPref != null){
+                String jsonString = pSharedPref.getString("SavedArticles", (new JSONObject()).toString());
+                JSONObject jsonObject = new JSONObject(jsonString);
+                Iterator<String> keysItr = jsonObject.keys();
+                while(keysItr.hasNext()) {
+                    String key = keysItr.next();
+                    String value = (String) jsonObject.get(key);
+                    outputMap.put(key, value);
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return outputMap;
     }
 
     private void setBar()
@@ -176,6 +223,7 @@ public class ReadingArticleActivity extends AppCompatActivity {
             {
                 Matcher matcherProfile = patternProfileUrl.matcher(urlNewString);
                 Matcher matcherNotArticle = patternNotArticleUrlInTheConv.matcher(urlNewString);
+                Matcher matcherSavedArticle = patterSavedArticle.matcher(urlNewString);
 
                 boolean isTheConversation = Objects.equals(Uri.parse(urlNewString).getHost(),"theconversation.com");
 
@@ -188,7 +236,7 @@ public class ReadingArticleActivity extends AppCompatActivity {
                     return true;
                 }
 
-                if(!matcherNotArticle.find() && !urlNewString.equals("https://theconversation.com/") && isTheConversation)
+                if((!matcherNotArticle.find() && !urlNewString.equals("https://theconversation.com/") && isTheConversation) || matcherSavedArticle.find())
                 {  //Whether it should be open as an article
                     return false;
                 }

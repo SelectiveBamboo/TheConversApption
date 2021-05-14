@@ -22,6 +22,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.mikepenz.materialdrawer.Drawer;
+
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private WebView webView;
 
     private Context context = this;
+
+    Drawer result;
 
     private String url = "https://theconversation.com/";
     final static String REGEX_URL_NOT_ARTICLE_THECONV = "theconversation.com/((fr)|(us)|(ca)|(global)|(africa)|(ca-fr)|(id)|(es)|(nz)|(uk)|(au)/?)";
@@ -90,6 +94,13 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
+        result = DrawerCreator.getDrawer(this, toolbar);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        result.setSelection(DrawerCreator.MAIN_ACTIVITY_DRAWER_ID);
     }
 
     @Override

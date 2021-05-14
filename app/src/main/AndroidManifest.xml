@@ -14,12 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
+        <activity android:name=".SavedArticlesActivity"></activity>
         <activity
             android:name=".ViewingProfileActivity"
             android:label="@string/title_activity_viewing_profile"
-            android:theme="@style/NoActionBar"></activity>
-
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".ReadingArticleActivity"
             android:label="@string/title_activity_reading_article"

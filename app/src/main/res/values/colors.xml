@@ -3,4 +3,20 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="transparent">#00FFFFFF</color>
+
+    <color name="conv_red">#C9E64A4A</color>
+
+    <!-- Material DEFAULT drawer colors -->
+    <color name="material_drawer_selected">#D8D4D4</color>
+    <color name="material_drawer_selected_legacy">#D8D4D4</color>
+    <color name="material_drawer_selected_text">#E632322C</color>
+    <color name="material_drawer_header_selection_text">#DE000000</color>
+    <color name="material_drawer_header_selection_subtext">#8A000000</color>
+
+    <color name="material_drawer_primary_text">#DEFFF8F8</color>
+    <color name="material_drawer_primary_icon">#8A000000</color>
+    <color name="material_drawer_secondary_text">#8AFFFFFF</color>
+    <color name="material_drawer_hint_text">#42000000</color>
+    <color name="material_drawer_divider">#1FFFFFFF</color>
 </resources>
