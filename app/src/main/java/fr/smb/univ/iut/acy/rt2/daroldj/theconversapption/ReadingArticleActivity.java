@@ -105,8 +105,6 @@ public class ReadingArticleActivity extends AppCompatActivity {
             {
                 final String nameOfArchivedFile = webView.getUrl().substring(28) + ".mht";
 
-                ReadingArticleActivity.this.getTitle();
-
                 final File archiveFile = new File(context.getFilesDir(), nameOfArchivedFile);
                 webView.saveWebArchive(archiveFile.getAbsolutePath());
 
