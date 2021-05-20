@@ -1,7 +1,10 @@
 package fr.smb.univ.iut.acy.rt2.daroldj.theconversapption;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.util.Xml;
+
+import androidx.preference.PreferenceManager;
 
 import org.threeten.bp.Clock;
 import org.threeten.bp.Instant;
@@ -17,7 +20,8 @@ public class TheConversationXmlParser {
 
     private static final String ns = null;
 
-    public static List<Entry> parseTilADayAgo(InputStream in) throws XmlPullParserException, IOException
+
+    public static List<Entry> parseUntilInstant(InputStream in, String instant_lastParsed) throws XmlPullParserException, IOException
     {
         try {
             XmlPullParser parser = Xml.newPullParser();
@@ -25,9 +29,9 @@ public class TheConversationXmlParser {
             parser.setInput(in, null);
             parser.nextTag();
 
-            Instant aDayAgo = Instant.now(Clock.systemUTC()).minusSeconds(86400);   //Minus 24Hours
+            Instant instantDateLimit = Instant.parse(instant_lastParsed);
 
-            return readFeed(parser, aDayAgo);
+            return readFeed(parser, instantDateLimit);
         }
         finally
         {
@@ -59,10 +63,9 @@ public class TheConversationXmlParser {
 
                 Instant publishedInstant = Instant.parse(entry.getPublished());
 
-                if (UTCDateLimit != null && publishedInstant.isBefore(UTCDateLimit))
+                if (UTCDateLimit != null && !publishedInstant.isAfter(UTCDateLimit))
                 {
-                    Log.d(TheConversationXmlParser.class.getName(),"isOutdated set to TRUE" );
-
+                    Log.d(TheConversationXmlParser.class.getName(),"isOutdated set to TRUE: " + entry.getTitle());
                     isOutdated = true;
                 }
                 else

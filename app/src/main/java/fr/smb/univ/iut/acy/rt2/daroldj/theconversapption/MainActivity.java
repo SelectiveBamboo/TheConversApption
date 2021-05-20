@@ -1,4 +1,4 @@
-package fr.smb.univ.iut.acy.rt2.daroldj.theconversapption;
+                                                                                                                                                                        package fr.smb.univ.iut.acy.rt2.daroldj.theconversapption;
 
 import android.Manifest;
 import android.content.Context;

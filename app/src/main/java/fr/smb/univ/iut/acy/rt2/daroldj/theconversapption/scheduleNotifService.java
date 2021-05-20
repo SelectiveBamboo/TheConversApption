@@ -32,7 +32,7 @@ public class scheduleNotifService extends JobIntentService {
 
     private void scheduleServiceAlarm(Context context)
     {
-        String timeNotif = sharedPrefs.getString("set_time_notification", "19:00");
+        String timeNotif = sharedPrefs.getString("set_time_notification", "00:00");
         Log.d(TAG,"ScheduleNotifService started, timeNotif : " + timeNotif);
 
         String[] splittedTimeNotif = timeNotif.split(":");
@@ -64,7 +64,7 @@ public class scheduleNotifService extends JobIntentService {
         {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
                     cal_alarm.getTimeInMillis(),
-                    AlarmManager.INTERVAL_DAY, alarmIntent);
+                    AlarmManager.INTERVAL_HOUR*4, alarmIntent);
         }
     }
 }

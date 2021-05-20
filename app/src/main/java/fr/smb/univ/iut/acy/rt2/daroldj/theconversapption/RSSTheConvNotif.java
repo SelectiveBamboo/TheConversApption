@@ -15,6 +15,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.preference.PreferenceManager;
 
+import org.threeten.bp.Clock;
+import org.threeten.bp.Instant;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
@@ -32,13 +34,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/*
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
- */
 public class RSSTheConvNotif extends JobIntentService {
 
     private static final  String CHANNEL_ID = "channel_TheConversApption";
@@ -67,8 +62,6 @@ public class RSSTheConvNotif extends JobIntentService {
     @Override
     protected void onHandleWork(Intent intent)
     {
-        Log.v(TAG, "Handling intent in RSSTheConvNotif");
-
         Set<String> rssLinks = new HashSet<>();
 
         String[] regionFeeds = getResources().getStringArray(R.array.regionCode_Feeds);
@@ -93,6 +86,8 @@ public class RSSTheConvNotif extends JobIntentService {
 
             int n = 1;
 
+            //When was the last article notified about
+            String lastPublishedDate = sharedPref.getString("instant_lastParsed", Instant.now(Clock.systemUTC()).minusSeconds(42400).toString());
             if (rssLinks.size() > 0)
             {
                 for (String rssLink : rssLinks)
@@ -105,49 +100,55 @@ public class RSSTheConvNotif extends JobIntentService {
                     catch (Exception e) { e.printStackTrace(); }
 
                     try {
-                        List<Entry> entries = TheConversationXmlParser.parseTilADayAgo(inputStreamRss);
+                        List<Entry> entries = TheConversationXmlParser.parseUntilInstant(inputStreamRss, lastPublishedDate);
 
-                        for (int i = 0; i<entries.size(); i++)
-                        {
-                            Entry entry = entries.get(i);
+                        if (entries.size() > 0) {
+                            for (int i = 0; i < entries.size(); i++) {
+                                Entry entry = entries.get(i);
 
-                            String titleInEntry = entry.getTitle();
-                            String linkInEntry = entry.getLink();
-                            String summaryInEntry = entry.getSummary();
+                                String titleInEntry = entry.getTitle();
+                                String linkInEntry = entry.getLink();
+                                String summaryInEntry = entry.getSummary();
 
-                            Intent intentOnClick = new Intent(Intent.ACTION_VIEW, Uri.parse(linkInEntry));
-                            intentOnClick.setData(Uri.parse(linkInEntry));
+                                Intent intentOnClick = new Intent(Intent.ACTION_VIEW, Uri.parse(linkInEntry));
+                                intentOnClick.setData(Uri.parse(linkInEntry));
 
-                            PendingIntent pendingIntent =
-                                    PendingIntent.getActivity(context, 74940, intentOnClick, PendingIntent.FLAG_UPDATE_CURRENT);
+                                PendingIntent pendingIntent =
+                                        PendingIntent.getActivity(context, 74940, intentOnClick, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                                    .setSmallIcon(R.drawable.ic_notififcation)
-                                    .setColor(0xD8352A)
-                                    .setContentTitle(titleInEntry)
-                                    .setContentText(summaryInEntry)
-                                    .setStyle(new NotificationCompat.BigTextStyle()
-                                            .bigText(summaryInEntry))
-                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                    .setCategory(NotificationCompat.CATEGORY_SOCIAL)
-                                    .setContentIntent(pendingIntent)
-                                    .setAutoCancel(true);
+                                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                                        .setSmallIcon(R.drawable.ic_notififcation)
+                                        .setColor(0xD8352A)
+                                        .setContentTitle(titleInEntry)
+                                        .setContentText(summaryInEntry)
+                                        .setStyle(new NotificationCompat.BigTextStyle()
+                                                .bigText(summaryInEntry))
+                                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                        .setCategory(NotificationCompat.CATEGORY_SOCIAL)
+                                        .setContentIntent(pendingIntent)
+                                        .setAutoCancel(true);
 
-                            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-                            // notificationId is a unique int for each notification
-                            notificationManager.notify(n, builder.build());
+                                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                                // notificationId is a unique int for each notification
+                                notificationManager.notify(n, builder.build());
 
-                            n++;
+                                n++;
+                            }
+                            Log.v(TAG, "Notification sent");
 
-
+                            //To get the date of the most recent article in notifications
+                            if (Instant.parse(entries.get(0).getPublished()).isAfter(Instant.parse(lastPublishedDate))) {
+                                lastPublishedDate = Instant.parse(entries.get(0).getPublished()).toString();
+                                Log.d(TAG, "onHandleWork: LastPublishedDate: ---- " + lastPublishedDate);
+                            }
                         }
-                        Log.v(TAG, "Notification sent");
                     }
-                    catch (FileNotFoundException e) { Log.e(TAG, "error FileNotFoundException : " + e.getMessage()); }
-                    catch (IOException e) { Log.e(TAG, "error IOException : " + e.getMessage()); }
-                    catch (XmlPullParserException e) { Log.e(TAG, "error XMLPullParserException : " + e.getMessage()); }
-                    catch (NullPointerException npe) { Log.e(TAG, "error nullPointerexception : " + npe.getMessage()); }
+                    catch (IOException ioe) { Log.e(TAG, "error IOException : " + ioe.getMessage()); }
+                    catch (XmlPullParserException XMLppe) { Log.e(TAG, "error XMLPullParserException : " + XMLppe.getMessage()); }
+                    catch (NullPointerException npe) { Log.e(TAG, "error nullPointerException : " + npe.getMessage()); }
                 }
+
+                sharedPref.edit().putString("instant_lastParsed", lastPublishedDate).commit();
             }
             else
             {
